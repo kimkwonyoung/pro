@@ -16,6 +16,9 @@ import com.kosa.pro.utils.StringUtil;
  * @author kky
  * 
  */
+/**
+ * 
+ */
 public class SearchVO implements GeneralModel {
 	
 	private static final long serialVersionUID = 6937599700079366836L;
@@ -56,6 +59,14 @@ public class SearchVO implements GeneralModel {
 	public static final int MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
 	
+	/**
+	 * 파일 토큰
+	 */
+	private String token;
+	
+
+
+
 	/**
 	 * <p>
 	 * 페이징 사용 여부
@@ -593,7 +604,7 @@ public class SearchVO implements GeneralModel {
 	}
 
 	/**
-	 * 파일 업로드 모듈용 - KDE_FILE.FILE_TYPE 필드
+	 * 파일 업로드 모듈용 - FILE_TYPE 필드
 	 * @return
 	 */
 	public String getFileType() {
@@ -601,7 +612,7 @@ public class SearchVO implements GeneralModel {
 	}
 
 	/**
-	 * 파일 업로드 모듈용 - KDE_FILE.FILE_TYPE 필드
+	 * 파일 업로드 모듈용 - FILE_TYPE 필드
 	 * @param fileType
 	 */
 	public void setFileType(String fileType) {
@@ -659,6 +670,23 @@ public class SearchVO implements GeneralModel {
 	 */
 	public void setPkSeq(String pkSeq) {
 		this.pkSeq = pkSeq;
+	}
+	
+	
+	/**
+	 * 파일 토큰 - 이미지 업로드
+	 * @return
+	 */
+	public String getToken() {
+		return token;
+	}
+	
+	/**
+	 * 파일 토큰 - 이미지 업로드
+	 * @param token
+	 */
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

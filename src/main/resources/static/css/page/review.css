@@ -1,0 +1,212 @@
+@charset "UTF-8";
+
+/*#####################여기부터 새로 추가한 부분######################*/
+#slideShow {
+	clear: both;
+	/* 플로팅 해제 */
+	width: 100%;
+	/* 너비 */
+	height: 300px;
+	/* 높이 */
+	overflow: hidden;
+	/* 영역 넘치면 감춤 */
+	position: relative;
+	padding: 25px;
+}
+
+/* #slides {
+          position: absolute;
+        } */
+
+#slides>img {
+	width: 100%;
+	/* 너비 */
+	float: left;
+	/* 가로로 배치 */
+}
+
+#prev {
+	left: 0;
+	/* 왼쪽으로 붙여서 */
+}
+
+#next {
+	right: 0;
+	/* 오른쪽으로 붙여서 */
+}
+
+/*메인 ul*/
+.main-ul {
+	margin-top: 10px;
+	padding: 0;
+
+}
+
+.main-ul>li {
+	padding: 0px 0px 15px;
+	font-size: 15px;
+	list-style-type: circle;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	text-wrap: nowrap;
+
+}
+
+.main-bd {
+	border-top: 2px solid;
+}
+
+/*메인 리스트 3개*/
+.notice-a {
+	font-size: 35px;
+	font-weight: bold;
+	float: right;
+	color: #9f9e9ebd;
+}
+
+.notice-h2 {
+	display: inline-block;
+	margin-top: 10px;
+
+}
+
+/*텍스트 영역*/
+.text-area {
+	height: 142px;
+	overflow: hidden;
+	margin-bottom: 5px;
+}
+
+.review-text-area {
+	width: 600px;
+	overflow: hidden;
+	position: relative;
+	line-height: 1.2em;
+	/* 한 줄의 높이 설정 */
+	max-height: 3.7em;
+	/* 4줄에 해당하는 높이 설정 (4 * 1.2em) */
+}
+
+.c-more {
+	position: absolute;
+	bottom: 0;
+
+}
+
+.view-count {
+	float: right;
+}
+
+/*후기 상세보기 테이블*/
+.table-review {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.table-review th,
+td {
+	border: 1px solid black;
+	padding: 8px;
+	text-align: left;
+}
+
+.table-review td {
+	width: 35%;
+	color: #070606;
+	font-size: 15px;
+}
+
+.table-review th {
+	background-color: #f2f2f2;
+	/* 회색 배경색 */
+	width: 15%;
+	color: #070606;
+
+}
+
+/*후기 상세보기*/
+.review-list {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	margin-bottom: 10px;
+	background-color: #f2f2f2;
+	padding: 15px;
+	color: #070606;
+	font-weight: bold;
+}
+
+.review-ul {
+	padding: 0;
+}
+
+.review-ul li {
+	font-size: 15px;
+	float: left;
+	list-style: none;
+	color: #070606;
+	margin-right: 20px;
+	margin-bottom: 10px;
+}
+
+/*######아이콘#######*/
+.icon-container {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 30px;
+	color: white;
+}
+
+.icon-love {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+
+}
+
+.love-list {
+
+	float: right;
+	margin-top: 15px;
+}
+
+.recommend {
+	font-size: 40px;
+	color: black;
+}
+
+.recommend-list {
+	font-size: 30px;
+	color: black;
+}
+
+.notification-badge {
+	position: absolute;
+	top: -7px;
+	right: -7px;
+	background-color: red;
+	color: white;
+	border-radius: 50%;
+	padding: 4px 8px;
+	font-size: 12px;
+	font-weight: bold;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+}
+
+.icon-love:hover {
+	color: black;
+}
+
+.icon-love:hover .recommend {
+	color: blue;
+}
+
+.icon-container:hover .icon-message {
+	color: black;
+}
+
+.icon-container:hover .mypage {
+	color: black;
+}

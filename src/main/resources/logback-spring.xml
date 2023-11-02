@@ -1,43 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!--로그 파일 저장 위치-->
+    <!-- 로그 파일 저장 위치 -->
     <property name="LOGS_PATH" value="./logs"/>
 
+    <!-- 로그 패턴 설정 (색상 추가) -->
+    <property name="CONSOLE_LOG_PATTERN" value="%d{HH:mm} %highlight(%-5level) %logger{36} - %msg%n"/>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</Pattern>
-        </layout>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
     </appender>
+
     <appender name="DAILY_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS_PATH}/logback.log</file>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %highlight(%-5level) %logger{35} - %msg%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOGS_PATH}/logback.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!-- or whenever the file size reaches 100MB -->
+                or whenever the file size reaches 100MB
                 <maxFileSize>5MB</maxFileSize>
-                <!-- kb, mb, gb -->
+                kb, mb, gb
             </timeBasedFileNamingAndTriggeringPolicy>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
-    
-    <logger name="com.kosa.testpro" level="INFO">
+
+    <logger name="com.kosa.pro" level="info">
         <appender-ref ref="DAILY_ROLLING_FILE_APPENDER" />
     </logger>
-    <root level="INFO">
+
+    <root level="debug">
         <appender-ref ref="STDOUT" />
     </root>
     
-    <logger name="jdbc" level="OFF"/>
-	<logger name="jdbc.sqlonly" level="OFF"/>
-	<logger name="jdbc.sqltiming" level="DEBUG"/>
-	<logger name="jdbc.audit" level="OFF"/>
-	<logger name="jdbc.resultset" level="OFF"/>
-	<logger name="jdbc.resultsettable" level="DEBUG"/>
-	<logger name="jdbc.connection" level="OFF"/>
+    <logger name="org.apache.catalina" level="off">
+    </logger>
+    
+    <logger name="org.apache.commons" level="off">
+    </logger>
+    
+    <logger name="org.springframework" level="off" >
+    </logger>
+    
+    <logger name="egovframework.*" level="off">
+    </logger>
+    
+    <logger name="java.sql" level="debug">
+    </logger>
+    
+    <logger name="org.mybatis.spring" level="debug">
+    </logger>
+    
+    <logger name="egovframework.sqlmappers" level="debug">
+    </logger>
+
+<!-- 	<logger name="org.hibernate.SQL" level="debug">
+        <appender-ref ref="DAILY_ROLLING_FILE_APPENDER" />
+    </logger> -->
+    <!-- 특정 로그 제거 -->
+    <turboFilter class="ch.qos.logback.classic.turbo.DuplicateMessageFilter">
+        <AllowedRepetitions>1</AllowedRepetitions>
+    </turboFilter>
+   
     
 </configuration>
+
+

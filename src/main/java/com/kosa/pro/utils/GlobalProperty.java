@@ -16,7 +16,6 @@ public class GlobalProperty {
 	@Value("${globals.web.mode}")
 	String _sWebMode;
 	
-	
 	@Value("${site.baseTitle}")
 	String _sHTMLTitle;
 	
@@ -29,13 +28,6 @@ public class GlobalProperty {
 	@Value("${session.name.user}")
 	String _sSessionNameUser;
 	
-	@Value("${session.name.site}")
-	String _sSessionNameSite;
-	
-	
-	@Value("${cookie.popup.prefix}")
-	String _sCookiePopupPrefix;
-	
 	@Value("${cannot.using.id}")
 	String _sCannotUsingID;
 	
@@ -44,18 +36,6 @@ public class GlobalProperty {
 	
 	@Value("${url.host.dev}")
 	String _sHostDev;
-	
-	@Value("${url.host.op}")
-	String _sHostOp;
-	
-	@Value("${url.cdn.local}")
-	String _sCdnLocal;
-	
-	@Value("${url.cdn.dev}")
-	String _sCdnDev;
-	
-	@Value("${url.cdn.op}")
-	String _sCdnOp;
 	
 	@Value("${url.admin.root}")
 	String _sAdminRoot;
@@ -75,114 +55,38 @@ public class GlobalProperty {
 	@Value("${view.alert}")
 	String _sViewAlert;
 	
-	@Value("${view.error}")
-	String _sViewError;
-	
-//	@Value("${upload.path.physical.local}")
-//	String _sPathPhysicalLocal;
-//	
-//	@Value("${upload.path.physical.dev}")
-//	String _sPathPhysicalDev;
-//	
-//	@Value("${upload.path.physical.op}")
-//	String _sPathPhysicalOp;
-//	
-//	@Value("${upload.path.virtual}")
-//	String _sPathVirtual;
-//	
-//	@Value("${upload.path.common}")
-//	String _sPathCommon;
-//	
-//	@Value("${upload.path.files}")
-//	String _sPathFiles;
-//	
-//	@Value("${upload.path.test}")
-//	String _sPathTest;
-//	
-//	@Value("${upload.path.editor}")
-//	String _sPathEditor;
-//	
-//	@Value("${upload.path.image}")
-//	String _sPathImage;
-//	
-//	@Value("${upload.path.temp}")
-//	String _sPathTemp;
-//	
-//	
-//	@Value("${upload.ext}")
-//	String _sUploadExtensions;
-	
-	@Value("${admin.email}")
-	String _sAdminEmail;
-	
-	@Value("${admin.name}")
-	String _sAdminName;
-	
-	@Value("${admin.keynumber}")
-	String _sAdminKeyNumber;
-	
-	@Value("${admin.address}")
-	String _sAdminAddress;
-	
-	@Value("${mail.host}")
-	String _sMailHost;
-	
-	@Value("${mail.port}")
-	String _sMailPort;
-	
 	@Value("${common.date.type}")
 	String _sDateFormat;
 	
 	@Value("${common.time.type}")
 	String _sTimeFormat;
 	
+	@Value("${upload.path.physical.local}")
+	String _sPathPhysicalLocal;
 	
-	@Value("${common.emails}")
-	String _sCommonEmails;
+	@Value("${upload.path.physical.dev}")
+	String _sPathPhysicalDev;
 	
-//	@Value("#{globals['sns.fb.api']}")
-//	String _sSNSFbAPIKey;
-//	
-//	@Value("#{globals['sns.kakao.api']}")
-//	String _sSNSKakaoAPIKey;
-//	
-//	@Value("#{globals['sns.naver.api']}")
-//	String _sSNSNaverAPIKey;
-//
-//	@Value("#{globals['map.daum.api']}")
-//	String _sMapDaumAPIKey;
+	@Value("${upload.path.physical.op}")
+	String _sPathPhysicalOp;
 	
+	@Value("${upload.path.virtual}")
+	String _sPathVirtual;
 	
-//	@Value("#{globals['common.date.type']}")
-//	String _sDateFormat;
-//	
-//	@Value("#{globals['common.time.type']}")
-//	String _sTimeFormat;
-//	
-//	
-//	@Value("#{globals['common.emails']}")
-//	String _sCommonEmails;
+	@Value("${upload.path.files}")
+	String _sPathFiles;
 	
-//	@Value("#{globals['email.auth']}")
-//	String _sEmailAuth;
-//	
-//	@Value("#{globals['email.join']}")
-//	String _sEmailJoin;
-//	
-//	@Value("#{globals['email.general']}")
-//	String _sEmailGeneral;
-//	
-//	@Value("#{globals['email.password']}")
-//	String _sEmailPassword;
-//	
-//	@Value("#{globals['email.withdrawal']}")
-//	String _sEmailWithdrawal;
-//	
-//	@Value("#{globals['email.question']}")
-//	String _sEmailQuestion;
+	@Value("${upload.path.test}")
+	String _sPathTest;
 	
-	// @Value("#{globals['email.qna']}")
-	// String _sEmailQna;
+	@Value("${upload.path.editor}")
+	String _sPathEditor;
+	
+	@Value("${upload.path.image}")
+	String _sPathImage;
+	
+	@Value("${upload.path.temp}")
+	String _sPathTemp;
 	
 	/**
 	 * 웹 모드 : local, dev, op
@@ -223,62 +127,11 @@ public class GlobalProperty {
 	}
 		
 	/**
-	 * 사이트 정보 세션 이름
-	 * @return
-	 */
-	public String getSessionNameForSite() {
-		return _sSessionNameSite;
-	}
-	
-	/**
-	 * 로그인 계정의 권한 세션 이름
-	 * @return
-	 */
-//	public String getSessionNameForAuth() {
-//		return _sSessionNameAuth;
-//	}
-	
-	/**
-	 * @return 팝업용 쿠키 이름 접두사
-	 */
-	public String getCookiePopupPrefix() {
-		return _sCookiePopupPrefix;
-	}
-	
-	/**
 	 * 
 	 * @return 사용할 수 없는 아이디 문자열
 	 */
 	public String[] getCannotUseIDs() {
 		return _sCannotUsingID.split(",");
-	}
-	
-	/**
-	 * 서버 호스트 : globals.web.mode 값에 따라 값이 달라짐. 기본값 local
-	 * 
-	 * @return
-	 */
-	public String getHost() {
-		if (this.getWebMode().equals("dev"))
-			return this._sHostDev;
-		else if (this.getWebMode().equals("op"))
-			return this._sHostOp;
-		else
-			return this._sHostLocal;
-	}
-	
-	/**
-	 * CDN : globals.web.mode 값에 따라 값이 달라짐. 기본값 local
-	 * 
-	 * @return
-	 */
-	public String getCdn() {
-		if (this.getWebMode().equals("dev"))
-			return this._sCdnDev;
-		else if (this.getWebMode().equals("op"))
-			return this._sCdnOp;
-		else
-			return this._sCdnLocal;
 	}
 	
 	/**
@@ -327,182 +180,6 @@ public class GlobalProperty {
 	}
 	
 	/**
-	 * 
-	 * @return 스프링 컨트롤러 error 출력용 URL
-	 */
-	public String getViewError() {
-		return _sViewError;
-	}
-	
-	/**
-	 * @return 이메일 서버 호스트
-	 */
-	public String getMailHost() {
-		return _sMailHost;
-	}
-	
-	/**
-	 * @return 메일 서버 포트 : 기본값 25
-	 */
-//	public int getMailPort() {
-//		if (StringUtils.isEmpty(_sMailPort))
-//			return 25;
-//		else
-//			return Integer.parseInt(_sMailPort);
-//	}
-	
-	/**
-	 * 파일 업로드 물리 경로 globals.properties - upload.path.physical 참조 : globals.web.mode 값에 따라 값이 달라짐. 기본값 local
-	 * 
-	 * @return
-	 */
-//	public String getUploadPathPhysical() {
-//		if (this.getWebMode().equals("dev"))
-//			return this._sPathPhysicalDev;
-//		else if (this.getWebMode().equals("op"))
-//			return this._sPathPhysicalOp;
-//		else
-//			return this._sPathPhysicalLocal;
-//	}
-	
-	/**
-	 * 업로드 루트 가상디렉토리
-	 * 
-	 * @return
-	 */
-//	public String getUploadPathVirtual() {
-//		return this._sPathVirtual;
-//	}
-//	
-//	/**
-//	 * 업로드 일반 파일 경로 (서브 디렉토리)
-//	 * 
-//	 * @return
-//	 */
-//	public String getUploadPathCommon() {
-//		return this._sPathCommon;
-//	}
-	
-//	/**
-//	 * 업로드 일반 파일 경로 (서브 디렉토리)
-//	 * 
-//	 * @return
-//	 */
-//	public String getUploadPathFiles() {
-//		return this._sPathFiles;
-//	}
-//	
-//	
-//	/**
-//	 * 업로드 테스트 경로 (서브 디렉토리)
-//	 * 
-//	 * @return
-//	 */
-//	public String getUploadPathTest() {
-//		return this._sPathTest;
-//	}
-//	
-//	/**
-//	 * 업로드 에디터 경로 (서브 디렉토리)
-//	 * 
-//	 * @return
-//	 */
-//	public String getUploadPathEditor() {
-//		return _sPathEditor;
-//	}
-//	
-//	/**
-//	 * 업로드 이미지 경로 (서브 디렉토리)
-//	 * 
-//	 * @return
-//	 */
-//	public String getUploadPathImage() {
-//		return _sPathImage;
-//	}
-//	
-//	
-//	/**
-//	 * 업로드 이미지 경로 (임시)
-//	 * @return
-//	 */
-//	public String getUploadPathTemp() {
-//		return _sPathTemp;
-//	}
-//	
-//	/**
-//	 * 업로드 가능 확장자 배열 : globals.properties = upload.ext 참조
-//	 * 
-//	 * @return
-//	 */
-//	public String[] getUploadExtensions() {
-//		String[] arr = _sUploadExtensions.split(",");
-//		return arr;
-//	}
-	
-	/**
-	 * 관리자 대표 이메일
-	 * 
-	 * @return
-	 */
-	public String getAdminEmail() {
-		return _sAdminEmail;
-	}
-	
-	/**
-	 * 관리자 대표 이메일 표시용 이름
-	 * 
-	 * @return
-	 */
-	public String getAdminName() {
-		return _sAdminName;
-	}
-	
-	/**
-	 * 대표 전화번호
-	 * 
-	 * @return
-	 */
-	public String getAdminKeyNumber() {
-		return _sAdminKeyNumber;
-	}
-	
-	/**
-	 * 회사 주소
-	 * 
-	 * @return
-	 */
-	public String getAdminAddress() {
-		return _sAdminAddress;
-	}
-	
-	/**
-	 * 페이스북 API 키
-	 * 
-	 * @return
-	 */
-//	public String getSNSFbAPIKey() {
-//		return _sSNSFbAPIKey;
-//	}
-	
-	/**
-	 * 카카오 API 키
-	 * 
-	 * @return
-	 */
-//	public String getSNSKakaoAPIKey() {
-//		return _sSNSKakaoAPIKey;
-//	}
-	
-	/**
-	 * 네이버 API 키
-	 * 
-	 * @return
-	 */
-//	public String getSNSNaverAPIKey() {
-//		return _sSNSNaverAPIKey;
-//	}
-	
-	/**
 	 * 날짜 표시 유형 : SearchVO 참조
 	 * 
 	 * @return
@@ -528,101 +205,64 @@ public class GlobalProperty {
 		return _sDateFormat + " " + _sTimeFormat;
 	}
 	
-//	List<StringPair> _listEmails = null;
-//	
-//	/**
-//	 * 공용 이메일 목록 globals.properties : common.emails 참조
-//	 * 
-//	 * @return
-//	 */
-//	public List<StringPair> getEmails() {
-//		if (!StringUtils.isEmpty(this._sCommonEmails)) {
-//			if (_listEmails == null) {
-//				_listEmails = new ArrayList<StringPair>();
-//				
-//				String[] arrEmails = this._sCommonEmails.split(",");
-//				for (String s : arrEmails)
-//					_listEmails.add(new StringPair(s.trim(), s.trim()));
-//			}
-//		}
-//		
-//		return _listEmails;
-//	}
-//	
 	/**
-	 * 이메일 템플릿 URL - 인증
-	 * @return the _sEmailAuth
+	 * 파일 업로드 물리 경로 globals.properties - upload.path.physical 참조 : globals.web.mode 값에 따라 값이 달라짐. 기본값 local
+	 * 
+	 * @return
 	 */
-//	@Deprecated
-//	public String getEmailAuth() {
-//		return _sEmailAuth;
-//	}
-//	
-//	/**
-//	 * 이메일 템플릿 URL - 회원가입
-//	 * 
-//	 * @return the _sEmailMember
-//	 */
-//	@Deprecated
-//	public String getEmailJoin() {
-//		return _sEmailJoin;
-//	}
-//	
-//	/**
-//	 * 이메일 템플릿 URL - 일반
-//	 * 
-//	 * @return the _sEmailGeneral
-//	 */
-//	@Deprecated
-//	public String getEmailGeneral() {
-//		return _sEmailGeneral;
-//	}
-//	
-//	/**
-//	 * 이메일 템플릿 URL - 비밀번호 변경
-//	 * 
-//	 * @return
-//	 */
-//	@Deprecated
-//	public String getEmailPassword() {
-//		return _sEmailPassword;
-//	}
-//	
-//	/**
-//	 * 이메일 템플릿 URL - 회원 탈퇴
-//	 * 
-//	 * @return
-//	 */
-//	@Deprecated
-//	public String getEmailWithdrawal() {
-//		return _sEmailWithdrawal;
-//	}
-//	
-//	/**
-//	 * 이메일 템플릿 URL - 문의 형식
-//	 * 
-//	 * @return
-//	 */
-//	@Deprecated
-//	public String getEmailQuestion() {
-//		return _sEmailQuestion;
-//	}
-//	
-//	/**
-//	 * 이메일 템플릿 URL - QNA
-//	 * 
-//	 * @return
-//	 */
-//	@Deprecated
-//	public String getEmailQna() {
-//		return _sEmailQuestion;
-//	}
-//	
-//	/**
-//	 * 다음 지도 API
-//	 * @return
-//	 */
-//	public String getMapDaumApiKey() {
-//		return this._sMapDaumAPIKey;
-//	}
+	public String getUploadPathPhysical() {
+		if (this.getWebMode().equals("dev"))
+			return this._sPathPhysicalDev;
+		else if (this.getWebMode().equals("op"))
+			return this._sPathPhysicalOp;
+		else
+			return this._sPathPhysicalLocal;
+	}
+	
+	/**
+	 * 업로드 루트 가상디렉토리
+	 * 
+	 * @return
+	 */
+	public String getUploadPathVirtual() {
+		return this._sPathVirtual;
+	}
+	
+	/**
+	 * 업로드 일반 파일 경로 (서브 디렉토리)
+	 * 
+	 * @return
+	 */
+	public String getUploadPathFiles() {
+		return this._sPathFiles;
+	}
+	
+	
+	/**
+	 * 업로드 테스트 경로 (서브 디렉토리)
+	 * 
+	 * @return
+	 */
+	public String getUploadPathTest() {
+		return this._sPathTest;
+	}
+	
+	/**
+	 * 업로드 에디터 경로 (서브 디렉토리)
+	 * 
+	 * @return
+	 */
+	public String getUploadPathEditor() {
+		return _sPathEditor;
+	}
+	
+	/**
+	 * 업로드 이미지 경로 (서브 디렉토리)
+	 * 
+	 * @return
+	 */
+	public String getUploadPathImage() {
+		return _sPathImage;
+	}
+	
 }

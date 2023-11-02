@@ -54,36 +54,24 @@ public class PrtController {
 		return this.session;
 	}
 	
-	/**
-	 * 관리자 세션 - 관리자 모델로 형변환하여 사용
-	 * 			- 관리자 모델이 정의되면 해당 모델 클래스로 변환해서 사용하는 것을 추천
-	 * @return
-	 */
+//	/**
+//	 * 관리자 세션 - 관리자 모델로 형변환하여 사용
+//	 * 			- 관리자 모델이 정의되면 해당 모델로 변환
+//	 * @return
+//	 */
 //	public MemberVO getAdminSession() {
 //		return (MemberVO) this.session.getAttribute(this.getConfig().getSessionNameForAdmin());
 //	}
 	
-	/**
-	 * 사용자 세션 - 사용자 모델로 형변환하여 사용
-	 * 			- 사용자 모델이 정의되면 해당 모델 클래스로 변환해서 사용하는 것을 추천
-	 * @return
-	 */
-	/*
-	 * public MemberInfoVO getUserSession() {
-		 return (MemberInfoVO)this.session.getAttribute(this.getConfig().getSessionNameForUser());
-	}
-	*/
+//	/**
+//	 * 사용자 세션 - 사용자 모델로 형변환하여 사용
+//	 * 			- 사용자 모델이 정의되면 해당 모델로 변환
+//	 * @return
+//	 */
+//	 public MemberInfoVO getUserSession() {
+//		 return (MemberInfoVO)this.session.getAttribute(this.getConfig().getSessionNameForUser());
+//	}
 	
-	/**
-	 * 세션에 저장된 사이트 정보를 가져옵니다.
-	 * 	- 사이트 정보 저장 루틴 : AuthencticInterceptor 참조  
-	 * @return
-	 */
-	/*
-	public SiteVO getSiteSession() {
-		return (SiteVO)this.session.getAttribute(this.getConfig().getSessionNameForSite());
-	}
-	*/
 	
 	/**
 	 * 페이지 서브 타이틀 추가  
@@ -98,7 +86,7 @@ public class PrtController {
 	
 	/**
 	 * BindingResult객체를 global Exception으로 변경하여 공통 Error페이지로 출력할 수 있도록 합니다.
-	 * 
+	 * 부트 사용 x
 	 * @param result
 	 * @param model
 	 * @return

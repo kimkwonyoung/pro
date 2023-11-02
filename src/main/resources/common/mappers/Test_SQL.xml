@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="test">
+	<sql id="select">
+		test_num, title, test_name
+	</sql>
+	
+	
+	<select id="totalCount" resultType="int">
+		select count(*)
+		from test_table
+	</select>
+	
+	<select id="selectTest" parameterType="SearchVO" resultType="TestVO">
+		<include refid="paging.top" />
+		select
+		<include refid="select" />
+		from test_table
+		<include refid="paging.bottom" />
+	</select>
+	
+	
+</mapper>

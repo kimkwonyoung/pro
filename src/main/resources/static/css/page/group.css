@@ -1,0 +1,466 @@
+/* ************************************  신청 목록보기 ************************************ */
+
+
+.data dl {
+    float: left;
+    margin: 0 20px 5px 0;
+    font-size: 14px;
+}
+
+
+
+dt, dd, li {
+		float: left;
+    margin: 0;
+    padding: 0;
+    line-height: 22px;
+}
+
+.board_data dl dt {
+    float: left;
+    padding-right: 5px;
+    font-weight: 500;
+    color: #333;
+    font-size: 14px;
+}
+
+.board_list .list_wrap.wrap2 dl.txts > dd {
+    padding-top: 10px;
+}
+.board_list .list_wrap .board_data {
+    padding-top: 0;
+    width: 100%;
+}
+dt, dd, li {
+    margin: 0;
+    padding: 0;
+    /* line-height: 22px; */
+}
+
+.title {
+		font-size: 20px;
+		margin:0;
+
+}
+
+.recuit {
+	font-size: 35px;
+	color: black;
+	font-weight: 700;
+}
+
+.inner1 {
+		display: flex;
+		justify-content: center;
+		margin-top: 50px;
+}
+
+
+.inner2 {
+		width: 70%;
+}
+
+.search_section {
+	min-height: 200px;
+	background-color: #f8f9fa;
+}
+
+.form-keyword {
+	padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    -o-transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+form {
+	display: flex;
+}
+
+.form-css{
+	padding : 20px;
+	justify-self: center;
+}
+
+
+.form-region{
+	display: inline-block;
+	padding: 5px;
+}
+
+.form-calendar{
+	display: inline-block;
+	padding: 5px;
+}
+
+.form-status {
+	display: inline-block;
+	padding: 5px;
+}
+
+.form-acttype {
+	display: inline-block;
+	padding: 5px;
+}
+
+.form-search {
+	display: inline-block;
+	padding: 5px;
+}
+
+
+.search-result-wrap{
+	display: flex;
+	justify-content: center;
+}
+
+
+
+/* ************************************  신청 상세보기 ************************************ */
+
+.inner3 {
+		display: flex;
+		justify-content: center;
+}
+
+
+.inner4 {
+		width: 100%;
+}
+
+.detail_section {
+		min-height: 200px;
+}
+
+.detail-list {
+    margin-bottom: 10px;
+    color: #070606;
+    font-weight: bold;
+}
+
+
+.form-css{
+	padding : 20px;
+	justify-self: center;
+}
+
+/* 기본 스타일 */
+h4 {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+
+/* 화면 너비가 작을 때 버튼 스타일 조정 */
+@media (max-width: 600px) {
+    .btn-frame {
+        text-align: center; /* 가운데 정렬로 변경 */
+        margin-top: 10px; /* 위쪽 여백 추가 */
+    }
+}
+
+.contents {
+	margin-top: 50px;
+	min-height: 300px;
+	color: black;
+}
+
+.map {
+	background-color: rgb(255, 255, 221);
+	min-height: 300px;
+}
+
+.personInfo {
+	display: flex;
+	justify-content: center;
+	padding: 0px;
+}
+
+.personInfo >ul>li {
+	list-style: none;
+	padding-right: 30px;
+	padding: 30px;
+	margin-top: 50px;
+	font-size: 20px;
+	/* background-color: rgb(214, 214, 214); */
+	color: black;
+}
+
+
+.detail-ul {
+    padding:0;
+}
+
+.detail-ul li {
+    font-size: 15px;
+    float:left;
+    list-style: none;
+    color:#070606;
+    margin-right:20px;
+    margin-bottom: 10px;
+}
+
+.btn-frame {
+	text-align: end;
+	margin-bottom: 10px;
+	flex: 1;
+  text-align: right;
+}
+
+.btn {
+	/* padding: 20px; */
+	text-align: center;
+	max-width: 170px;
+	background-color: #0c6ccb;
+	color: white;
+	font-size: 20px;
+}
+
+
+
+.inner-detail-wrap {
+	display:flex;
+	justify-content: center;
+}
+
+.inner5-detail {
+	width: 75%;
+}
+
+/* 모든 테이블 셀(td, th)의 테두리와 글자 색상을 빨간색으로 설정 */
+.table-review td,
+.table-review th {
+    border: 1px solid rgb(195, 195, 195); /* 테두리 색상 */
+		border-right: none;
+    border-left: none;
+		font-size: 14px;
+		text-align: center;
+}
+
+
+
+.tags {
+    list-style: none;
+    padding: 0;
+    display: flex;
+		flex-wrap: wrap;
+    align-items: center;
+		border-bottom: 1px solid rgb(195, 195, 195); 
+		justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+        .tags {
+            flex-direction: column; /* 모바일에서는 세로로 나열 */
+        }
+
+        .btn-frame {
+            flex: auto; /* 화면 가운데로 버튼을 옮김 */
+            margin-top: 10px; /* 버튼 위에 간격 추가 */
+        }
+    }
+
+.tags li {
+    display: inline;
+    margin-right: 10px; /* 요소 사이의 간격 조정 */
+}
+
+
+/* ************************************  마이페이지(단체) ************************************ */
+
+/* ************************************  마이페이지(단체) 메인 ************************************ */
+
+/* ************************************  마이페이지(단체) 신청글 작성하기 ************************************ */
+
+     #table-td {
+         text-align: center;
+         color:white; 
+         background-color: #395b8ff7;
+         font-weight: bold;
+      }
+
+      .inner-status {
+         width: 100%;
+      }
+
+      ul {
+         padding: 0;
+         margin: 0;
+      }
+
+      li {
+         list-style-type: none;
+         
+         margin: 0;
+      }
+
+      .data-table {
+         width: 100%;
+         font-size: 10px;
+         border-collapse: collapse;
+         text-align: center;
+      }
+
+      .data-table th, .data-table td {
+         border: none;
+         text-align: center;
+      }
+
+      button {
+         width: 50px;
+         height: 30px;
+         border-radius: 5px;
+         border: none;
+         color: white;
+         font-size: 12px;
+         font-weight: bold;
+      }
+
+
+
+   .board_data dl dt {
+      float: left;
+      padding-right: 5px;
+      font-weight: 500;
+      color: #333;
+      font-size: 14px;
+   }
+
+   .board_list .list_wrap.wrap2 dl.txts > dd {
+      padding-top: 10px;
+   }
+   .board_list .list_wrap .board_data {
+      padding-top: 0;
+      width: 100%;
+   }
+
+   .recuit {
+      font-size: 35px;
+      color: black;
+      font-weight: 700;
+   }
+
+
+   .search_section {
+      min-height: 200px;
+   }
+
+
+   .form-css{
+      padding : 20px;
+      justify-self: center;
+   }
+
+   .contents {
+      margin-top: 50px;
+      min-height: 300px;
+      background-color: rgb(255, 202, 124);
+   }
+
+   .map {
+      background-color: rgb(255, 255, 221);
+      min-height: 300px;
+   }
+
+   .personInfo {
+      display: flex;
+      justify-content: center;
+   }
+
+   .personInfo >ul>li {
+      list-style: none;
+      padding-right: 30px;
+      padding: 30px;
+      margin-top: 50px;
+      background-color: aqua;
+   }
+
+
+   .review-ul {
+      padding:0;
+   }
+
+   .review-ul li {
+      font-size: 15px;
+      float:left;
+      list-style: none;
+      color:#070606;
+      margin-right:20px;
+      margin-bottom: 10px;
+   }
+
+   .btn-frame {
+      text-align: end;
+      margin-bottom: 10px;
+   }
+
+   .btn {
+      /* padding: 20px; */
+      /* float: right; */
+      text-align: center;
+      width: 120px;
+      height: 50px;
+
+      background-color: #0c6ccb;
+      color: white;
+      font-size: 20px;
+   }
+
+
+   .ck-content {
+   min-height: 250px;
+   padding: 0px;
+   }
+
+
+   .inner-detail-wrap {
+      display:flex;
+      justify-content: center;
+   }
+
+/*   .inner-detail {
+      width: 75%;
+   }
+*/
+   /* 모든 테이블 셀(td, th)의 테두리와 글자 색상을 빨간색으로 설정 */
+   .table-register td,
+   .table-register th {
+      border: none;
+      background-color: white;
+      padding: 20px 0px;
+   }
+   
+   .table-register th {
+	  width:110px; 
+      height:50px; 
+	   
+   }
+
+
+
+
+/* ************************************  마이페이지(단체) 승인 및 거절 ************************************ */
+
+/* ************************************  마이페이지(단체) 진행중인 봉사 ************************************ */
+
+/* ************************************  마이페이지(단체) 봉사활동 후기 ************************************ */
+
+/* ************************************  마이페이지(단체) 캘린더 관리 ************************************ */
+
+/* ************************************  마이페이지(단체) 개인정보 수정 ************************************ */

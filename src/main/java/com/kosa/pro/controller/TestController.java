@@ -20,13 +20,13 @@ public class TestController extends PrtController {
 	@Autowired
 	private BoardService _boardService;
 	
-	@RequestMapping("main.do")
-	public String mainIndex(SearchVO search, Model model) throws Exception {
-		log.info(">>>>>>>>>>>>>>ㅇㅇㅇㅇㅇ");
-		model.addAttribute("test", getConfig().getAdminName());
-		
-		return "main";
-	}
+//	@RequestMapping("main.do")
+//	public String mainIndex(SearchVO search, Model model) throws Exception {
+//		log.info(">>>>>>>>>>>>>>ㅇㅇㅇㅇㅇ");
+////		model.addAttribute("test", getConfig().getAdminName());
+//		model.addAttribute("testlist", _boardService.testList(search));
+//		return "main";
+//	}
 	
 	@RequestMapping(value = "boardlist.do")
 	public String boardList(BoardSearchVO search, Model model) throws Exception {

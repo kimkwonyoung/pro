@@ -19,22 +19,23 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 @Configuration
 public class CommonConfig {
 	
-	@Bean
-    public UrlBasedViewResolver viewResolver() {
-    	UrlBasedViewResolver tilesViewResolver = new UrlBasedViewResolver();
-    	tilesViewResolver.setViewClass(TilesView.class);
-    	tilesViewResolver.setOrder(0);
-    	return tilesViewResolver;
-    }
+//	@Bean
+//    public UrlBasedViewResolver viewResolver() {
+//    	UrlBasedViewResolver tilesViewResolver = new UrlBasedViewResolver();
+//    	tilesViewResolver.setViewClass(TilesView.class);
+//    	tilesViewResolver.setOrder(0);
+//    	return tilesViewResolver;
+//    }
+	//////ㅇㅇㅇㅇㅇㅇㅇㅇ아니 왜 안되냐고ㅇㅇ
 
-    @Bean
-    public TilesConfigurer tilesConfigurer() {
-        final TilesConfigurer configurer = new TilesConfigurer();
-
-        configurer.setDefinitions(new String[]{"classpath:/common/resource/tiles_main.xml"});
-        configurer.setCheckRefresh(true);
-        return configurer;
-    }
+//    @Bean
+//    public TilesConfigurer tilesConfigurer() {
+//        final TilesConfigurer configurer = new TilesConfigurer();
+//
+//        configurer.setDefinitions(new String[]{"classpath:/common/resource/tiles_main.xml"});
+//        configurer.setCheckRefresh(true);
+//        return configurer;
+//    }
     
     
     @Bean

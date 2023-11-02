@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+           "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fileattache">
+	
+	
+	<insert id="merge" parameterType="FileAttacheVO">
+		<selectKey keyProperty="fileSeq" resultType="long" order="BEFORE" statementType="PREPARED">
+			<if test="fileSeq == null or fileSeq == 0">
+				select file_seq.nextval from dual
+			</if>
+			<if test="fileSeq > 0">
+				select #{fileSeq} from dual
+			</if>
+		</selectKey>
+		merge into file_attache a
+		using dual
+            on (file_seq = #{fileSeq})
+            when matched then
+            	update
+           		<set>
+					<if test="tableName != null">
+						table_name = #{tableName,jdbcType=VARCHAR},
+					</if>
+					<if test="refSeq != null">
+						ref_seq = #{refSeq,jdbcType=VARCHAR},
+					</if>
+					<if test="fileName != null">
+						file_name = #{fileName,jdbcType=VARCHAR},
+					</if>
+					<if test="physicalName != null">
+						physical_name = #{physicalName,jdbcType=VARCHAR},
+					</if>
+					<if test="contentType != null">
+						content_type = #{contentType,jdbcType=VARCHAR},
+					</if>
+					<if test="fileType != null">
+						file_type = #{fileType,jdbcType=VARCHAR},
+					</if>
+					<if test="fileSize != null">
+						file_size = #{fileSize,jdbcType=VARCHAR},
+					</if>
+					<if test="regDate != null">
+						reg_date = #{regDate,jdbcType=VARCHAR},
+					</if>
+					<if test="fileToken != null">
+						file_token = #{fileToken,jdbcType=VARCHAR}, 
+					</if>
+				</set>
+				where file_seq = #{fileSeq,jdbcType=NUMERIC}
+				
+            when not matched then
+            	insert (
+					file_seq, table_name, ref_seq,
+					file_name, physical_name,
+					content_type, file_type, 
+					file_size, file_token
+				)
+				values (
+					#{fileSeq,jdbcType=NUMERIC}, #{tableName,jdbcType=VARCHAR}, #{refSeq,jdbcType=VARCHAR},
+					#{fileName,jdbcType=VARCHAR}, #{physicalName,jdbcType=VARCHAR},
+					#{contentType,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR},
+					#{fileSize,jdbcType=VARCHAR}, #{fileToken,jdbcType=VARCHAR}
+				)
+	</insert>
+	
+
+	<select id="findById" resultType="FileUploadVO">
+		SELECT  
+			 file_id 
+			 token
+			,original_filename
+			,real_filename
+			,content_type
+			,size
+		FROM  file_upload 
+		where file_id = #{file_id}
+	</select>
+	
+	
+	<select id="getFileUploadList" resultType="FileAttacheVO">
+		select
+			*
+		from file_attache  
+		where file_token = #{token} 
+	</select>
+	
+	<delete id="deleteTemplateFile">
+		delete from file_attache  
+		where file_seq in  
+		<foreach collection="list" item="item" open="(" separator="," close=")" >
+			#{item.file_seq}
+		</foreach> 
+	</delete>
+
+
+	
+	<select id="deleteFileList" resultType="FileUploadVO">
+		select
+			*
+		from file_attache  
+		where file_token in 
+		<foreach collection="list" item="item" open="(" separator="," close=")" >
+			#{item.token}
+		</foreach> 
+	</select>
+
+
+	<delete id="deleteTokenList">
+		delete from file_attache  
+		where file_token in 
+		<foreach collection="list" item="item" open="(" separator="," close=")" >
+			#{item.token}
+		</foreach> 
+	</delete>
+
+
+</mapper>
