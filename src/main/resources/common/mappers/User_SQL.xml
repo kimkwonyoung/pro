@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+
+
+<!--    동적으로 구현해야 할 때 쓸 SQL문 // 까먹을까 미리 작성 -->
+<!--
+    <select id="selectFinishedList" resultType="RecruitBoardVO"> 
+		select
+		    TO_CHAR(r.volun_start_date, 'YYYY-MM-DD') as volun_start_date , 
+		    TO_CHAR(r.volun_end_date, 'YYYY-MM-DD') as volun_end_date,  
+		    r.recruit_title, 
+		    r.recruit_content, 
+		    r.group_name 
+		from 
+		    recruit_board r 
+		join
+		    volunteer_record vr ON r.recruit_seq = vr.recruit_seq 
+		join 
+		    member m ON vr.mem_seq = m.mem_seq  
+		where 
+		    m.mem_seq = ${loginMember.memSeq}
+   </select>
+     -->
+
+	<!-- 종료된 봉사 -->
+    <select id="selectFinishedList" parameterType="UserSearchVO"  resultType="RecruitBoardVO">
+
+		select
+		    TO_CHAR(r.volun_start_date, 'YYYY-MM-DD') as volun_start_date , 
+		    TO_CHAR(r.volun_end_date, 'YYYY-MM-DD') as volun_end_date,  
+		    r.recruit_title, 
+		    r.recruit_content, 
+		    r.group_name,
+		    r.recruit_seq,
+		    r.group_mem_seq
+		from 
+		    recruit_board r 
+		join
+		    volunteer_record vr ON r.recruit_seq = vr.recruit_seq 
+		join 
+		    member m ON vr.mem_seq = m.mem_seq  
+		where 
+		    m.mem_seq = #{memSeq}
+   </select> 
+	<!-- 종료된 봉사 -->
+
+
+
+
+	<!-- 나의 봉사 목록 -->
+	<select id="selectRecruitList" parameterType="UserSearchVO" resultType="RecruitBoardVO">	
+    	<include refid="paging.top" /> 
+		select
+		    vp.state,
+		    r.volun_start_date,
+		    r.volun_end_date,
+		    r.recruit_end_date,
+		    r.recruit_title,
+		    r.mem_count,
+		    r.group_name
+		from 
+		    recruit_board r 
+		join
+		    volunteer_proceed vp ON r.recruit_seq = vp.recruit_seq 
+		join 
+		    member m ON vp.mem_seq = m.mem_seq  
+		where 
+		    m.mem_seq = #{memSeq}
+		<include refid="paging.bottom" />
+	</select>
+ 	<!-- 나의 봉사 목록 -->
+
+
+	 
+	 
+	<!-- 내가 쓴 후기 -->
+	<select id="selectReviewList" parameterType="UserSearchVO" resultType="ReviewBoardVO">
+    	<include refid="paging.top" /> 
+		select
+		    review_title,
+		    reg_date,
+		    SUBSTR(review_content, 1, 10) AS review_content
+		from review_board
+		where mem_seq = #{memSeq}
+		order by reg_date desc
+		<include refid="paging.bottom" />
+	</select>
+ 	<!-- 내가 쓴 후기 -->
+ 	
+ 	
+ 	
+ 
+ 
+	<!-- 봉사 온도 -->
+    <select id="selectVolunteerTime" parameterType="UserSearchVO" resultType="VolunteerTimeVO">
+	    select *
+		from volunteer_time
+		where mem_seq= #{memSeq}
+    </select>
+ 	<!-- 봉사 온도 끝 -->
+
+
+
+
+	<!-- 메인 화면 출력용 진행 중 봉사 -->
+	<!-- selectPersonal, selectVolunteerProceedList, timeRecord -->
+    <select id="selectVolunteerProceed" parameterType="UserSearchVO" resultType="RecruitBoardVO">
+		select
+			rb.recruit_seq,
+		    rb.recruit_title,
+		    rb.latitude,
+		    rb.longitude
+		from 
+		    recruit_board rb
+   		join
+		    volunteer_proceed vp on rb.recruit_seq = vp.recruit_seq 
+		where 
+		    current_timestamp between rb.volun_start_date and rb.volun_end_date
+   			and vp.mem_seq = #{memSeq}
+    </select>
+ 	<!-- 메인 화면 출력용 진행 중 봉사 -->
+ 	
+ 	
+
+	<!-- 출석 버튼 -->
+	<!-- 출석하면 종료된 봉사에 추가되는 쿼리(proceed 테이블의 데이터로 record 테이블로 insert) -->
+	<!-- 테이블에 Data를 insert 정적 쿼리 -->
+	<insert id="volunteerAttend" parameterType="UserSearchVO">
+		insert into volunteer_record (
+		    volun_record_seq,
+		    mem_seq,
+		    recruit_seq,
+		    group_mem_seq,
+		    attend,
+		   	timein
+		)
+		select
+		    volunteer_record_seq.nextval as volun_record_seq,
+		    vp.mem_seq,
+		    vp.recruit_seq,
+		    vp.group_mem_seq,
+		    'Y',
+		    current_timestamp
+		from 
+		    volunteer_proceed vp
+		join
+		    recruit_board rb on vp.recruit_seq = rb.recruit_seq
+		where 
+		    current_timestamp between rb.volun_start_date and rb.volun_end_date
+		    and vp.mem_seq = #{memSeq}
+            and not exists (
+	            select 1
+	            from volunteer_record vr
+	            where vr.mem_seq = vp.mem_seq
+	              and vr.recruit_seq = vp.recruit_seq
+	        )
+	</insert>	
+	<!-- 출석 버튼 -->
+
+
+
+	<!-- 출퇴근 시간 출력용 -->
+	<select id="volunteerRecord" parameterType="UserSearchVO" resultType="volunteerRecordVO">
+		select vr.timein, vr.timeout
+		from volunteer_record vr
+		join volunteer_proceed vp on vr.recruit_seq = vp.recruit_seq
+		join recruit_board rb on vp.recruit_seq = rb.recruit_seq
+		where current_timestamp between rb.volun_start_date and rb.volun_end_date
+		    and vp.mem_seq = #{memSeq}
+	</select>
+	<!-- 출퇴근 시간 출력용 -->
+ 
+ 
+ 	<!-- 퇴근 시간 업데이트 -->
+	<update id="recordUpdate" parameterType="UserSearchVO" >
+		update volunteer_record vr
+		set timeout = current_timestamp
+		where vr.mem_seq = #{memSeq}
+		  and exists (
+		      select 1
+		      from volunteer_proceed vp
+		      join recruit_board rb on vp.recruit_seq = rb.recruit_seq
+		      where vp.mem_seq = vr.mem_seq
+		        and current_timestamp between rb.volun_start_date and rb.volun_end_date
+		  )
+	</update>
+	 	<!-- 퇴근 시간 업데이트 -->
+
+</mapper> 

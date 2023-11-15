@@ -1,0 +1,133 @@
+/* --------------------------------------------------------- admininquiry 시작점 ------------------------------------------------------------------------------------------*/
+
+
+/* 공통 스타일 */
+.inquiry-container, .inquirysearch-bar {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+       /* 텍스트 중앙 정렬 */
+       text-align: center;
+
+       /* 컨테이너 중앙 정렬 */
+       margin-left: auto;
+       margin-right: auto;
+}
+
+.inquiry-label {
+    font-weight: 600;
+    color: #333;
+    margin-right: 10px;
+}
+
+.inquiry-select, .search-input, .date-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.inquiry-select:focus, .search-input:focus, .date-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    outline: none;
+}
+
+/* 검색 부분 스타일 */
+.inquiry-search span {
+    font-size: 16px;
+    color: #333;
+    margin-right: 10px;
+}
+
+.search-input {
+    flex-grow: 1;
+}
+
+.search-btn {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 기간 선택 부분 스타일 */
+.inquiry-date-selection {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.date-btn {
+    padding: 8px 12px;
+    background-color: #007bee;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.date-btn:hover {
+    background-color: #467fb5;
+}
+
+.date-separator {
+    color: #333;
+    margin: 0 5px;
+}
+
+/* 체크박스 스타일 */
+.date-toggle {
+    margin-right: 10px;
+}
+
+/* 문의유형 및 상태 선택 영역 */
+.inquiry-selection {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.inquiry-searchbtn{
+    display: flex;
+    justify-content: center;
+}
+
+
+/* 문의 목록 스타일 */
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.left-panel,
+.right-panel {
+    flex: 1;
+    padding: 10px;
+}
+
+.list-item {
+    cursor: pointer;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* 상세보기 패널 스타일 */
+#details {
+    padding: 120px;
+    border: 1px solid #e0e0e0;
+}

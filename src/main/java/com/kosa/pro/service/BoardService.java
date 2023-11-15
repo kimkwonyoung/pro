@@ -14,7 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.kosa.pro.model.BoardVO;
+import com.kosa.pro.model.TestVO;
+import com.kosa.pro.model.common.SearchVO;
 import com.kosa.pro.model.search.BoardSearchVO;
+import com.kosa.pro.service.common.BaseService;
 
 import lombok.extern.slf4j.Slf4j;
 /** 게시판 비즈니스 로직
@@ -34,7 +37,10 @@ public class BoardService extends BaseService {
 //		return (List<BoardVO>) getDAO().selectList("board.selectBoardList", search);
 	}
 	
+	public List<TestVO> testList(SearchVO search) {
+		
+		return (List<TestVO>) getDAO().selectBySearch("test.selectTest", search);
+	}
 	
-	
-	
+
 }

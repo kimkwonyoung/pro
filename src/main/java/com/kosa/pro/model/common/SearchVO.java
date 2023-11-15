@@ -16,6 +16,9 @@ import com.kosa.pro.utils.StringUtil;
  * @author kky
  * 
  */
+/**
+ * 
+ */
 public class SearchVO implements GeneralModel {
 	
 	private static final long serialVersionUID = 6937599700079366836L;
@@ -56,6 +59,14 @@ public class SearchVO implements GeneralModel {
 	public static final int MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
 	
+	/**
+	 * 파일 토큰
+	 */
+	private String token;
+	
+
+
+
 	/**
 	 * <p>
 	 * 페이징 사용 여부
@@ -99,12 +110,21 @@ public class SearchVO implements GeneralModel {
 	private String groupCode = "";
 
 	
-	
+	/**
+	 * 사용여부
+	 */
+	private String useYn;
 	
 	/**
 	 * 정렬
 	 */
 	private String orderBy = "";
+	
+	
+	/**
+	 * 정렬 문자열
+	 */
+	private String sort;
 	
 	/**
 	 * 날짜 검색 시작일 YYYY-MM-DD
@@ -593,7 +613,7 @@ public class SearchVO implements GeneralModel {
 	}
 
 	/**
-	 * 파일 업로드 모듈용 - KDE_FILE.FILE_TYPE 필드
+	 * 파일 업로드 모듈용 - FILE_TYPE 필드
 	 * @return
 	 */
 	public String getFileType() {
@@ -601,7 +621,7 @@ public class SearchVO implements GeneralModel {
 	}
 
 	/**
-	 * 파일 업로드 모듈용 - KDE_FILE.FILE_TYPE 필드
+	 * 파일 업로드 모듈용 - FILE_TYPE 필드
 	 * @param fileType
 	 */
 	public void setFileType(String fileType) {
@@ -659,6 +679,55 @@ public class SearchVO implements GeneralModel {
 	 */
 	public void setPkSeq(String pkSeq) {
 		this.pkSeq = pkSeq;
+	}
+	
+	
+	/**
+	 * 파일 토큰 - 이미지 업로드
+	 * @return
+	 */
+	public String getToken() {
+		return token;
+	}
+	
+	/**
+	 * 파일 토큰 - 이미지 업로드
+	 * @param token
+	 */
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	/**
+	 * 정렬 - 문자열
+	 * @return
+	 */
+	public String getSort() {
+		return sort;
+	}
+
+	/**
+	 * 정렬 - 문자열
+	 * @param sort
+	 */
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+
+	/**
+	 * 컬럼 - 사용 여부
+	 * @return
+	 */
+	public String getUseYn() {
+		return useYn;
+	}
+
+	/**
+	 * 컬럼 - 사용 여부
+	 * @param useYn
+	 */
+	public void setUseYn(String useYn) {
+		this.useYn = useYn;
 	}
 	
 	

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="comment">
+
+	<resultMap type="ReviewCommentVO" id="commentResultMap">
+		<id property="commentSeq" column="comment_seq" />
+    	<result property="reviewSeq" column="review_seq" />
+    	<result property="comContent" column="com_content" />
+    	<result property="writeId" column="write_id" />
+    	<result property="regDate" column="reg_date" />
+    	<result property="modDate" column="mod_date" />
+    	<result property="memSeq" column="mem_seq" />
+    	<result property="delYn" column="del_yn" />
+    	<result property="memAuth" column="mem_auth" />
+		
+		<association property="member" resultMap="memberResultMap" />
+	</resultMap>
+
+	<resultMap type="MemberVO" id="memberResultMap">
+		<id property="memSeq" column="mem_seq" />
+    	<result property="memId" column="mem_id" />
+    	<result property="name" column="name" />
+    	<result property="platform" column="platform" />
+    	<result property="auth" column="auth" />
+    	<result property="profilImage" column="profil_image" />
+		
+	</resultMap>
+	
+	
+	<select id="totalCount" resultType="int">
+		select count(*)
+		from review_comment r inner join member m
+		on r.mem_seq = m.mem_seq
+		where r.review_seq = #{reviewSeq}
+	</select>
+	
+	<select id="selectCommentList" parameterType="ReviewSearchVO" resultMap="commentResultMap">
+		<include refid="paging.top" />
+		select * 
+		from review_comment r inner join member m
+		on r.mem_seq = m.mem_seq
+		where r.review_seq = #{reviewSeq}
+		order by comment_seq
+		<include refid="paging.bottom" />
+	</select>
+	
+	<select id="selectByNew" resultMap="commentResultMap">
+		select * 
+		from review_comment r inner join member m
+		on r.mem_seq = m.mem_seq
+		where r.review_seq = #{reviewSeq}
+		order by comment_seq desc
+	</select>
+	
+	<insert id="insert">
+		insert into review_comment
+		(com_content, write_id, mem_seq, mem_auth, review_seq)
+		values
+		(#{comContent}, #{writeId}, #{memSeq}, #{memAuth}, #{reviewSeq})
+	</insert>
+	
+	
+</mapper>

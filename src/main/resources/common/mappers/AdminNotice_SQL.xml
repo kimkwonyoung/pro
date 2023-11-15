@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminnotice">
+
+<!-- NoticeVO 객체를 위한 resultMap -->
+  <resultMap id="NoticeResultMap" type="NoticeVO">
+    <id property="noticeSeq" column="NOTICE_SEQ" />
+    <result property="writeId" column="WRITE_ID" />
+    <result property="title" column="TITLE" />
+    <result property="content" column="CONTENT" />
+    <result property="regDate" column="REG_DATE" />
+    <result property="modDate" column="MOD_DATE" />
+    <result property="viewCount" column="VIEW_COUNT" />
+    <result property="pixedYn" column="FIXED_YN" />
+    <result property="delYn" column="DEL_YN" />
+  </resultMap>
+  
+   <!-- 공지사항 검색 조건 -->
+ <sql id="whereClauseNotice">
+  <trim prefix="where" prefixOverrides="and">
+    <if test="searchWord != null and searchWord != ''">
+      <choose>
+        <!-- 제목 검색 조건 -->
+        <when test="type1 == 'title'">
+          and TITLE like concat(concat('%', #{searchWord}), '%')
+        </when>
+        <!-- 작성자 검색 조건, 컬럼명은 실제 데이터베이스의 컬럼명과 일치해야 함 -->
+        <when test="type1 == 'writeId'">
+          and WRITE_ID like concat(concat('%', #{searchWord}), '%')
+        </when>
+        <!-- 내용 검색 조건 -->
+        <when test="type1 == 'content'">
+          and CONTENT like concat(concat('%', #{searchWord}), '%')
+        </when>
+        <!-- 다른 검색 조건 추가 가능 -->
+      </choose>
+    </if>
+  </trim>
+</sql>
+  
+   <!-- 공지사항 전체 카운트 -->
+  <select id="totalCountNotice" resultType="int">
+    select count(*)
+    from NOTICE
+    <include refid="whereClauseNotice" />
+  </select>
+  
+  <!-- 공지사항 리스트 -->
+  <select id="adminselectNoticeList" parameterType="NoticeVO" resultMap="NoticeResultMap">
+    <include refid="paging.top" />
+    select
+      NOTICE_SEQ,
+      WRITE_ID,
+      TITLE,
+      CONTENT,
+      REG_DATE,
+      MOD_DATE,
+      VIEW_COUNT,
+      FIXED_YN,
+      DEL_YN
+    from NOTICE
+    <include refid="whereClauseNotice" />
+    <choose>
+      <when test="sort != null and sort != ''">
+        order by ${sort}
+      </when>
+      <otherwise>
+        order by NOTICE_SEQ desc
+      </otherwise>
+    </choose>
+    <include refid="paging.bottom" />
+  </select>
+  
+  <select id="selectMainNotice" resultType="NoticeVO">
+  	select * from notice
+	where fixed_yn = 'Y'
+	order by notice_seq desc
+  </select>
+  
+  <!-- 공지사항 상세 -->
+<!--   <select id="selectNoticeDetail" parameterType="int" resultMap="NoticeResultMap"> -->
+<!--     select -->
+<!--       NOTICE_SEQ, -->
+<!--       WRITE_ID, -->
+<!--       TITLE, -->
+<!--       CONTENT, -->
+<!--       REG_DATE, -->
+<!--       MOD_DATE, -->
+<!--       VIEW_COUNT, -->
+<!--       FIXED_YN, -->
+<!--       DEL_YN -->
+<!--     from NOTICE -->
+<!--     where NOTICE_SEQ = #{noticeSeq} -->
+<!--   </select> -->
+	
+
+
+</mapper>
+

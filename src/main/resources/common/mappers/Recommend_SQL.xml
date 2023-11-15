@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="recommend">
+	
+	<select id="recommendCount"  resultType="int">
+		select count(*)
+		from recommend
+		where review_seq = #{reviewSeq}
+		and mem_seq = #{memSeq}
+		and mem_auth = #{memAuth}
+	</select>
+	
+	<insert id="insert">
+		insert into recommend
+		(recom_seq, review_seq, mem_seq, mem_auth)
+		values
+		(recommend_seq.nextval, #{reviewSeq}, #{memSeq}, #{memAuth})
+		
+	</insert>
+	
+	<delete id="delete">
+		delete from recommend
+		where review_seq = #{reviewSeq}
+	</delete>
+	
+	
+</mapper>

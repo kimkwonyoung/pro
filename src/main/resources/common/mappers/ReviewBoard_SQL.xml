@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="review">
+
+	<resultMap type="ReviewBoardVO" id="reviewResultMap">
+		<id property="reviewSeq" column="review_seq" />
+    	<result property="recruitSeq" column="recruit_seq" />
+    	<result property="reviewTitle" column="review_title" />
+    	<result property="reviewContent" column="review_content" />
+    	<result property="writeId" column="write_id" />
+    	<result property="regDate" column="reg_date" />
+    	<result property="modDate" column="mod_date" />
+    	<result property="recomCount" column="recom_count" />
+    	<result property="viewCount" column="view_count" />
+    	<result property="delYn" column="del_yn" />
+    	<result property="imageSeq" column="image_seq" />
+		
+		<association property="member" resultMap="memberResultMap" />
+	</resultMap>
+	
+	<resultMap type="MemberVO" id="memberResultMap">
+		<id property="memSeq" column="mem_seq" />
+    	<result property="memId" column="mem_id" />
+    	<result property="name" column="name" />
+    	<result property="platform" column="platform" />
+    	<result property="auth" column="auth" />
+    	<result property="profilImage" column="profil_image" />
+		
+	</resultMap>
+
+	<sql id="select">
+		review_seq, recruit_seq, review_title, review_content, write_id, reg_date, to_char(mod_date, 'yyyy-mm-dd') mod_date, recom_count, view_count, del_yn, image_seq
+	</sql>
+	
+	<sql id="whereClause">
+		<trim prefix="where" prefixOverrides="and">
+			<if test="searchWord != null and searchWord != ''">
+				<choose>
+					<when test="type1 == 'title'">
+						and review_title like concat(concat('%', #{searchWord}), '%')
+					</when>
+					<when test="type1 == 'writeId'">
+						and write_id like concat(concat('%', #{searchWord}), '%')
+					</when>
+					<when test="type1 == 'content'">
+						and review_content like concat(concat('%', #{searchWord}), '%')
+					</when>
+					<otherwise>
+						and (review_title like concat(concat('%', #{searchWord}), '%') or write_id like concat(concat('%', #{searchWord}), '%') or review_content like concat(concat('%', #{searchWord}), '%'))
+					</otherwise>
+				</choose>
+			</if>
+			<choose>
+				<when test="useYn != null and useYn != ''">
+					and (del_yn != 'Y' and del_yn = #{useYn})
+				</when>
+				<when test="codeNumber != null and codeNumber != ''">
+					and (code_number = #{codeNumber} and del_yn = 'N')				
+				</when>
+				<otherwise>
+					and del_yn = 'N'
+				</otherwise>
+			</choose>
+		</trim>
+	</sql>
+	
+	<select id="totalCount" parameterType="ReviewSearchVO" resultType="int">
+		select count(*)
+		<choose>
+    		<when test="codeNumber != null and codeNumber != ''">
+    			from review_board r inner join category c
+				on r.review_seq = c.review_seq
+    		</when>
+    		<otherwise>
+    			from review_board
+    		</otherwise>
+    	</choose>
+		<include refid="whereClause" />
+	</select>
+
+	<select id="selectReviewList" parameterType="ReviewSearchVO" resultType="ReviewBoardVO">
+		<include refid="paging.top" />
+		select *
+    	<choose>
+    		<when test="codeNumber != null and codeNumber != ''">
+    			from review_board r inner join category c
+				on r.review_seq = c.review_seq
+    		</when>
+    		<otherwise>
+    			from review_board
+    		</otherwise>
+    	</choose>
+		<include refid="whereClause" />
+		<choose>
+			<when test="sort != null and sort != ''">
+				order by ${sort}
+			</when>
+			<otherwise>
+				<choose>
+					<when test="codeNumber != null and codeNumber != ''">
+						order by r.review_seq desc
+					</when>
+					<otherwise>
+						order by review_seq desc
+					</otherwise>
+			
+				</choose>
+				
+			</otherwise>
+		</choose>
+		<include refid="paging.bottom" />
+	</select>
+	
+	
+	<select id="selectPopularList" resultType="ReviewBoardVO">
+		select review_title, to_char(mod_date, 'yyyy-mm-dd') mod_date, review_seq
+		from (
+			select * from review_board
+			order by recom_count desc
+		)
+		<![CDATA[
+			where rownum <= 3
+		]]>
+	</select>
+	
+	<select id="selectOne" parameterType="ReviewSearchVO" resultMap="reviewResultMap">
+		select * 
+		from review_board r inner join member m
+		on r.mem_seq = m.mem_seq
+		where review_seq = #{reviewSeq}
+	</select>
+	
+	<select id="selectRecommend" resultType="int">
+		select recom_count
+		from review_board
+		where review_seq = #{reviewSeq}
+	</select>
+	
+	<select id="selectMainReviewTop3" resultMap="reviewResultMap">
+		select review_title, review_content, to_char(mod_date, 'yyyy-mm-dd') mod_date, review_seq, image_seq, name, profil_image
+			from (
+				select * 
+	            from review_board r inner join member m
+	            on r.mem_seq = m.mem_seq
+				order by r.recom_count desc
+			)
+		<![CDATA[	
+			where rownum <= 3
+		]]>
+	</select>
+	
+	<update id="updateViewCount" parameterType="ReviewSearchVO">
+		update review_board
+		set 
+		view_count = view_count + 1
+		where review_seq = #{reviewSeq}
+	</update>
+	
+	<update id="updateRecommendCount">
+		update review_board
+		set
+		recom_count = recom_count + 1
+		where review_seq = #{reviewSeq}
+	</update>
+	
+	<update id="updateRecommendCountMinus">
+		update review_board
+		set
+		recom_count = recom_count - 1
+		where review_seq = #{reviewSeq}
+	</update>
+	
+	
+	<insert id="merge" parameterType="ReviewBoardVO">
+		<selectKey keyProperty="reviewSeq" resultType="int" order="BEFORE" statementType="PREPARED">
+			<if test="reviewSeq == null or reviewSeq == 0">
+				select review_board_seq.nextval from dual
+			</if>
+			<if test="reviewSeq > 0">
+				select #{reviewSeq} from dual
+			</if>
+		</selectKey>
+		merge into review_board a
+		using dual
+            on (review_seq = #{reviewSeq})
+            when matched then
+            	update
+           		<set>
+					<if test="recruitSeq != null and recruitSeq > 0">
+						recruit_seq = #{recruitSeq,jdbcType=NUMERIC},
+					</if>
+					<if test="reviewTitle != null">
+						review_title = #{reviewTitle,jdbcType=VARCHAR},
+					</if>
+					<if test="reviewContent != null">
+						review_content = #{reviewContent,jdbcType=VARCHAR},
+					</if>
+					<if test="writeId != null">
+						write_id = #{writeId,jdbcType=VARCHAR},
+					</if>
+					<if test="regDate != null">
+						reg_date = #{regDate,jdbcType=VARCHAR},
+					</if>
+					<if test="modDate != null">
+						mod_date = #{modDate,jdbcType=VARCHAR},
+					</if>
+					<if test="recomCount != null">
+						recom_count = #{recomCount,jdbcType=NUMERIC},
+					</if>
+					<if test="viewCount != null">
+						view_count = #{viewCount,jdbcType=NUMERIC},
+					</if>
+					<if test="delYn != null">
+						del_yn = #{delYn,jdbcType=VARCHAR}, 
+					</if>
+					<if test="delYn != null">
+						del_yn = #{delYn,jdbcType=VARCHAR}, 
+					</if>
+					<if test="imageSeq != null">
+						image_seq = #{imageSeq,jdbcType=NUMERIC}, 
+					</if>
+					<if test="memSeq != null">
+						mem_seq = #{memSeq,jdbcType=NUMERIC}, 
+					</if>
+				</set>
+				where review_seq = #{reviewSeq,jdbcType=NUMERIC}
+				
+            when not matched then
+            	insert (
+					review_seq, recruit_seq,
+					review_title, review_content,
+					write_id, recom_count,
+					view_count, image_seq, mem_seq
+				)
+				values (
+					#{reviewSeq,jdbcType=NUMERIC}, #{recruitSeq,jdbcType=NUMERIC}, 
+					#{reviewTitle,jdbcType=VARCHAR}, #{reviewContent,jdbcType=VARCHAR}, 
+					#{writeId,jdbcType=VARCHAR}, #{recomCount,jdbcType=NUMERIC}, 
+					#{viewCount,jdbcType=NUMERIC}, #{imageSeq,jdbcType=NUMERIC}, #{memSeq,jdbcType=NUMERIC}
+				)
+	</insert>
+	
+	<!-- 카테고리 테이블에 데이터 추가 -->
+	<insert id="insertCategory" parameterType="ReviewSearchVO">
+		insert into category(review_seq, code_number)
+		<foreach collection="arrCategory" item="category" separator=" UNION ALL ">
+    		 select #{reviewSeq}, #{category} from dual 
+  		</foreach>
+	</insert>
+	
+	<update id="updateCategoryCount" parameterType="ReviewSearchVO">
+		update category_count
+		set
+		category_count = category_count + 1
+		where
+		<foreach collection="arrCategory" item="category" separator=" or ">
+    		 code_number = #{category}
+  		</foreach>
+	</update>
+	
+</mapper>

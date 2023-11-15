@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+
+	<select id="findMemid" resultType="LoginMember">
+		select *
+		from login_member
+		where login_id = #{_parameter}
+	</select>
+	
+	<select id="selectMemId" resultType="MemberVO">
+		select *
+		from member
+		where mem_id = #{memId}
+	</select>
+	
+
+ 	<update id="updateGroupMemberLastLogin">
+		update group_member set 
+			last_login_time = SYSTIMESTAMP
+		where group_mem_id = #{groupMemId} 
+	</update>
+	
+	<update id="loginGroupCountClear">
+		update group_member set 
+			 login_count = 0 
+			,ben_yn = 'N'
+		where group_mem_id = #{groupMemId}
+	</update>
+	
+	 <update id="updateMemberLastLogin">
+		update member set 
+			last_login_time = SYSTIMESTAMP
+		where mem_id = #{memId} 
+	</update>
+	
+	<update id="loginCountClear">
+		update member set 
+			 login_count = 0 
+			,ben_yn = 'N'
+		where mem_id = #{memId}
+	</update>
+	
+	<update id="loginCountInc">
+		update
+		<choose>
+			<when test="loginAuth == 'MANAGER'">
+				group_member
+			</when>
+			<otherwise>
+				member
+			</otherwise>			
+		</choose>
+		set
+			login_count = login_count + 1
+			<if test="loginCount > 3">
+				, ben_yn = 'Y'
+			</if>
+			<choose>
+				<when test="loginAuth == 'MANAGER'">
+					where group_mem_id = #{loginId}
+				</when>
+				<otherwise>
+					where mem_id = #{loginId}
+				</otherwise>			
+			</choose>
+		
+	</update>  
+	
+	<insert id="insert">
+		insert into member
+		(mem_seq, mem_id, name, auth, platform, profil_image)
+		values
+		(mem_seq.nextval, #{memId}, #{name}, #{auth}, #{platform}, #{profilImage})
+	</insert>
+	
+	<insert id="insertVolunteerTime">
+		insert into volunteer_time
+		(mem_seq)
+		values
+		(#{memSeq})
+	</insert>
+	
+</mapper>
+

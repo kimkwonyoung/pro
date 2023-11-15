@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="recruit">
+	<sql id="select">
+	
+		RECRUIT_SEQ
+		,GROUP_MEM_SEQ
+		,GROUP_NAME
+		,VOLUN_REGION1
+		,VOLUN_REGION2
+		,VOLUN_START_DATE
+		,VOLUN_END_DATE
+		,RECRUIT_STATE
+		,VOLUN_CODE
+		,VOLUN_TIME
+		,RECRUIT_START_DATE
+		,RECRUIT_END_DATE
+		,MEM_COUNT
+		,VOLUN_TARGET
+		,RECRUIT_TITLE
+		,RECRUIT_CONTENT
+		,VIEW_COUNT
+		,REG_DATE
+		,MOD_DATE
+		,DEL_YN
+		,MANAGER
+		,EMAIL
+		,PHONE
+		,VOLUN_ADDR
+        ,LATITUDE
+        ,LONGITUDE
+        ,COUNT
+<!--         trunc(volun_start_date) = trunc(sysdate) -->
+	</sql>
+	
+	<sql id="whereClause">
+		<trim prefix="where" prefixOverrides="and">
+			<if test="searchWord != null and searchWord != ''"> 
+				<choose>
+					<when test="type1 == 'title'">
+						and recruit_title like concat(concat('%', #{searchWord}), '%')
+					</when>
+					<when test="type1 == 'writeId'">
+						and group_name like concat(concat('%', #{searchWord}), '%')
+					</when>
+					<when test="type1 == 'content'">
+						and recruit_content like concat(concat('%', #{searchWord}), '%')
+					</when>
+					<otherwise>
+						and (recruit_title like concat(concat('%', #{searchWord}), '%') or write_id like concat(concat('%', #{searchWord}), '%') or recruit_content like concat(concat('%', #{searchWord}), '%'))
+					</otherwise>
+				</choose>
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="totalCount" parameterType="SearchVO" resultType="int">
+		select count(*)
+		from recruit_board
+		<include refid="whereClause" />
+	</select>
+
+
+	<!-- 봉사 신청 게시판 목록보기 -->
+	<select id="selectRecruitList" parameterType="SearchVO" resultType="RecruitBoardVO">
+		<include refid="paging.top" />
+			select 
+	    	<include refid="select" />
+			from recruit_board
+		<include refid="whereClause" />
+		<choose>
+			<when test="sort != null and sort != ''">
+				order by ${sort}
+			</when>
+			<otherwise>
+				order by recruit_seq desc
+			</otherwise>
+		</choose>
+		<include refid="paging.bottom" />
+	</select>
+	
+	
+	<!-- 봉사 신청 게시판 상세보기 -->
+	<select id="selectRecruitGet" resultType="RecruitBoardVO">
+		select 
+    	<include refid="select" />
+		from recruit_board
+		where
+			recruit_seq = #{recruitSeq}
+	</select>
+	
+	<select id="selectMainRecruit" resultType="RecruitBoardVO">
+		select recruit_title, recruit_seq
+		from (
+	    	select * 
+	    	from recruit_board
+	    	where recruit_state = '모집중'
+	    	order by recruit_seq desc
+	<![CDATA[    	
+		) where rownum <= 5
+	]]>		
+	</select>
+	
+
+<insert id="insertRecruit">
+    <selectKey keyProperty="recruitSeq" resultType="int" order="BEFORE">
+        select RECRUIT_BOARD_SEQ.NEXTVAL recruit_seq from dual
+    </selectKey>
+    INSERT INTO recruit_board (
+        RECRUIT_SEQ
+        ,GROUP_NAME
+        ,VOLUN_REGION1
+        ,VOLUN_REGION2
+        ,VOLUN_START_DATE
+        ,VOLUN_END_DATE
+        ,RECRUIT_STATE
+        ,VOLUN_CODE
+        ,VOLUN_TIME
+        ,RECRUIT_START_DATE
+        ,RECRUIT_END_DATE
+        ,MEM_COUNT
+        ,VOLUN_TARGET
+        ,RECRUIT_TITLE
+        ,RECRUIT_CONTENT
+        ,MANAGER
+        ,EMAIL
+        ,PHONE
+        ,VOLUN_ADDR
+        ,LATITUDE
+        ,LONGITUDE
+        ,GROUP_MEM_SEQ
+    ) VALUES (
+        #{recruitSeq}
+        ,#{groupName}
+        ,#{volunRegion1}
+        ,#{volunRegion2}
+        ,#{volunStartDate}
+        ,#{volunEndDate}
+        ,#{recruitState}
+        ,#{volunCode}
+        ,#{volunTime}
+        ,#{recruitStartDate}
+        ,#{recruitEndDate}
+        ,#{memCount}
+        ,#{volunTarget}
+        ,#{recruitTitle}
+        ,#{recruitContent}
+        ,#{manager}
+        ,#{email}
+        ,#{phone}
+        ,#{volunAddr}
+        ,#{latitude}
+        ,#{longitude}
+        ,#{groupMemSeq}
+    )
+</insert>
+
+
+	
+	
+	
+	<!-- 봉사 신청 게시판 글 수정하기 -->
+	<update id="updateRecruit" >
+		update 
+			recruit_board
+		set 
+			,GROUP_MEM_SEQ	 	 = #{groupMemSeq}
+			,GROUP_NAME			 = #{groupName}
+			,VOLUN_REGION1		 = #{volunRegion1}
+			,VOLUN_REGION2		 = #{volunRegion2}
+			,VOLUN_START_DATE	 = #{volunStartDate}
+			,VOLUN_END_DATE		 = #{volunEndDate}
+			,RECRUIT_STATE		 = #{recruitState}
+			,VOLUN_CODE			 = #{volunCode}
+			,VOLUN_TIME			 = #{volunTime}
+			,RECRUIT_START_DATE	 = #{recruitStartDate}
+			,RECRUIT_END_DATE	 = #{recruitEndDate}
+			,MEM_COUNT			 = #{memCount}
+			,VOLUN_TARGET		 = #{volunTarget}
+			,RECRUIT_TITLE		 = #{recruitTitle}
+			,RECRUIT_CONTENT	 = #{recruitContent}
+			,MANAGER			 = #{manager}
+			,EMAIL				 = #{email}
+			,PHONE				 = #{phone}
+		where 
+			board_num 			 = #{boardNum}
+	</update>
+	
+	
+	<!-- 봉사 신청 게시판 글 삭제하기 -->
+	<delete id="deleteRecruit">
+		delete
+		 	from recruit_board
+		where
+			recruit_seq = #{recruitSeq}
+	</delete>
+	
+	
+</mapper>

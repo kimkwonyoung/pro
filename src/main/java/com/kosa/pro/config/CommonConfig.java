@@ -11,6 +11,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
@@ -19,22 +22,23 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 @Configuration
 public class CommonConfig {
 	
-	@Bean
-    public UrlBasedViewResolver viewResolver() {
-    	UrlBasedViewResolver tilesViewResolver = new UrlBasedViewResolver();
-    	tilesViewResolver.setViewClass(TilesView.class);
-    	tilesViewResolver.setOrder(0);
-    	return tilesViewResolver;
-    }
+//	@Bean
+//    public UrlBasedViewResolver viewResolver() {
+//    	UrlBasedViewResolver tilesViewResolver = new UrlBasedViewResolver();
+//    	tilesViewResolver.setViewClass(TilesView.class);
+//    	tilesViewResolver.setOrder(0);
+//    	return tilesViewResolver;
+//    }
+	//////ㅇㅇㅇㅇㅇㅇㅇㅇ아니 왜 안되냐고ㅇㅇ
 
-    @Bean
-    public TilesConfigurer tilesConfigurer() {
-        final TilesConfigurer configurer = new TilesConfigurer();
-
-        configurer.setDefinitions(new String[]{"classpath:/common/resource/tiles_main.xml"});
-        configurer.setCheckRefresh(true);
-        return configurer;
-    }
+//    @Bean
+//    public TilesConfigurer tilesConfigurer() {
+//        final TilesConfigurer configurer = new TilesConfigurer();
+//
+//        configurer.setDefinitions(new String[]{"classpath:/common/resource/tiles_main.xml"});
+//        configurer.setCheckRefresh(true);
+//        return configurer;
+//    }
     
     
     @Bean
@@ -48,6 +52,19 @@ public class CommonConfig {
         
         configurer.setLocations(resources);
         return configurer;
+    }
+    
+    @Bean
+    public CorsFilter corsFilter() {
+       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+       CorsConfiguration config = new CorsConfiguration();
+       config.setAllowCredentials(true);
+       config.addAllowedOrigin("*"); // e.g. http://domain1.com
+       config.addAllowedHeader("*");
+       config.addAllowedMethod("*");
+
+       source.registerCorsConfiguration("/api/**", config);
+       return new CorsFilter(source);
     }
     
 //    @Bean

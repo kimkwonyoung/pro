@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminboard">
+
+	<!-- RecruitBoardVO 객체를 위한 resultMap -->
+	<resultMap id="RecruitResultMap" type="RecruitBoardVO">
+		<id property="recruitSeq" column="recruit_seq" />
+		<result property="groupMemSeq" column="group_mem_seq" />
+		<result property="groupName" column="group_name" />
+		<result property="volunRegion1" column="volun_region1" />
+		<result property="volunRegion2" column="volun_region2" />
+		<result property="volunStartDate" column="volun_start_date" />
+		<result property="volunEndDate" column="volun_end_date" />
+		<result property="recruitState" column="recruit_state" />
+		<result property="volunCode" column="volun_code" />
+		<result property="volunTime" column="volun_time" />
+		<result property="recruitStartDate" column="recruit_start_date" />
+		<result property="recruitEndDate" column="recruit_end_date" />
+		<result property="memCount" column="mem_count" />
+		<result property="volunTarget" column="volun_target" />
+		<result property="recruitTitle" column="recruit_title" />
+		<result property="recruitContent" column="recruit_content" />
+		<result property="viewCount" column="view_count" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
+		<result property="delYn" column="del_yn" />
+		<result property="manager" column="manager" />
+		<result property="email" column="email" />
+		<result property="phone" column="phone" />
+	</resultMap>
+
+	<!-- ReviewBoardVO 객체를 위한 resultMap -->
+	<resultMap id="ReviewResultMap" type="ReviewBoardVO">
+		<id property="reviewSeq" column="review_seq" />
+		<result property="recruitSeq" column="recruit_seq" />
+		<result property="reviewTitle" column="review_title" />
+		<result property="reviewContent" column="review_content" />
+		<result property="writeId" column="write_id" />
+		<result property="regDate" column="reg_date" />
+		<result property="modDate" column="mod_date" />
+		<result property="recomCount" column="recom_count" />
+		<result property="viewCount" column="view_count" />
+		<result property="delYn" column="del_yn" />
+		<!-- Assuming IMAGE_SEQ maps to a property in ReviewBoardVO -->
+<!-- 		<result property="imageSeq" column="image_seq" /> -->
+	</resultMap>
+
+	<!-- recruit 관련 sql 스니펫(재사용 가능한 코드를 스니펫) -->
+	<sql id="selectRecruit">
+		recruit_seq,
+		group_mem_seq,
+		group_name,
+		volun_region1,
+		volun_region2,
+		volun_start_date,
+		volun_end_date,
+		recruit_state,
+		volun_code,
+		volun_time,
+		recruit_start_date,
+		recruit_end_date,
+		mem_count,
+		volun_target,
+		recruit_title,
+		recruit_content,
+		view_count,
+		reg_date,
+		mod_date,
+		del_yn,
+		manager,
+		email,
+		phone
+	</sql>
+
+	<!-- review 관련 sql 스니펫 -->
+	<sql id="selectReview">
+		review_seq,
+		recruit_seq,
+		review_title,
+		review_content,
+		write_id,
+		reg_date,
+		mod_date,
+		recom_count,
+		view_count,
+		del_yn
+		<!-- image_seq mapping DTO에는 없는데 DB 테이블에는 있음 -->
+		<!-- 		image_seq -->
+	</sql>
+
+	<!-- recruit 검색 조건 -->
+	<sql id="whereClauseRecruit">
+		<trim prefix="where" prefixOverrides="and">
+			<if test="searchWord != null and searchWord != ''">
+				<choose>
+					<when test="type1 == 'TopField'">
+						and title like concat(concat('%', #{searchWord}),
+						'%')
+					</when>
+					<when test="type1 == 'Recuritboard'">
+						and mem_id like concat(concat('%', #{searchWord}),
+						'%')
+					</when>
+					<when test="type1 == 'Reviewboard'">
+						and mem_id like concat(concat('%', #{searchWord}),
+						'%')
+					</when>
+					<otherwise>
+						and (title like concat(concat('%', #{searchWord}), '%')
+						or mem_id like concat(concat('%', #{searchWord}), '%')
+					</otherwise>
+				</choose>
+			</if>
+		</trim>
+	</sql>
+
+	<!-- review 검색 조건 -->
+	<sql id="whereClauseReview">
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="searchWord != null and searchWord != ''">
+				<choose>
+					<!-- Assuming 'title' for 모집게시판 and 'content' for 후기게시판 -->
+					<when test="type1 == 'Recuritboard'">
+						AND title LIKE CONCAT('%', #{searchWord}, '%')
+					</when>
+					<when test="type1 == 'Reviewboard'">
+						AND content LIKE CONCAT('%', #{searchWord}, '%')
+					</when>
+					<otherwise>
+						AND (
+						title LIKE CONCAT('%', #{searchWord}, '%')
+						OR content LIKE CONCAT('%', #{searchWord}, '%')
+						)
+					</otherwise>
+				</choose>
+			</if>
+		</trim>
+	</sql>
+
+
+	<!-- 모집 게시판 조회 조회 -->
+	<select id="selectRecruitBoardList"
+		parameterType="BoardSearchVO" resultMap="RecruitResultMap">
+		<include refid="paging.top" />
+		select
+		<include refid="selectRecruit" />
+		from recruit_board
+		<include refid="whereClauseRecruit" />
+		order by recruit_seq desc
+		<include refid="paging.bottom" />
+	</select>
+
+	<!-- 후기 게시판  조회 -->
+	<select id="selectReviewBoardList" parameterType="BoardSearchVO"
+		resultMap="ReviewResultMap">
+
+		<include refid="paging.top" />
+		select
+		<include refid="selectReview" />
+		from review_board
+		<include refid="whereClauseReview" />
+		order by review_seq desc
+		<include refid="paging.bottom" />
+	</select>
+
+
+	<!-- 모집 토탈 카운트 -->
+	<select id="totalCountrecruit" parameterType="BoardSearchVO"
+		resultType="int">
+		select count(*)
+		from recruit_board
+		<include refid="whereClauseRecruit" />
+	</select>
+
+	<!-- 리뷰 전체 카운트 -->
+	<select id="ReviewtotalCount" parameterType="BoardSearchVO"
+		resultType="int">
+		select count(*)
+		from review_board
+		<include refid="whereClauseReview" />
+	</select>
+
+
+</mapper>

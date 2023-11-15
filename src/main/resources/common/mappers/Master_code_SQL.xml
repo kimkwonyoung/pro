@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="code">
+	<resultMap id="BaseResultMap" type="com.kosa.pro.model.MasterCodeVO">
+		<result column="code_number" jdbcType="VARCHAR" property="codeNumber" />
+		<result column="code_name" jdbcType="VARCHAR" property="codeName" />
+		<result column="category_count" jdbcType="NUMERIC" property="categoryCount" />
+	</resultMap>
+
+	<sql id="select">
+		code_seq, code_group, code_number, code_name, code_detail, code_yn
+	</sql>
+	
+	<select id="selectGroupCode" resultType="MasterCodeVO">
+		select
+		<include refid="select" />
+		from master_code
+		where code_group = #{groupCode}
+		order by code_number
+	</select>
+	
+	<select id="selectGroupList" resultType="MasterCodeVO">
+		select code_group
+		from master_code
+        group by code_group
+        order by code_group
+	</select>
+	
+	<!-- 카테고리 이름 가져오기 -->
+	<select id="selectCodeName" parameterType="ReviewSearchVO" resultType="MasterCodeVO">
+		select
+		<include refid="select" />
+		from master_code
+		where code_group = #{groupCode}
+		and code_number = #{codeNumber}
+	</select>
+	
+	<!-- 카테고리에 대한 카운트(후기게시판에서 사용) -->
+	<select id="selectCategoryCode" resultMap="BaseResultMap">
+		select m.code_number, m.code_name, c.category_count
+		from master_code m inner join category_count c
+		on m.code_number = c.code_number
+		where m.code_group = '0001'
+		order by c.category_count desc
+	</select>
+	
+	<!-- 후기 게시판 글 상세 정보 카테고리 이름 가져오기 -->
+	<select id="selectCategoryCodeName" parameterType="ReviewSearchVO" resultType="MasterCodeVO">
+		select m.code_name, m.code_number
+		from review_board r 
+		inner join category c
+		on r.review_seq = c.review_seq
+		inner join master_code m
+		on c.code_number = m.code_number
+		where r.review_seq = #{reviewSeq}
+		and code_group = '0001'
+	</select>
+	
+	<delete id="delete">
+		delete from master_code
+		where code_group = #{codeGroup}
+		and code_number = #{codeNumber}
+	</delete>
+	
+	<insert id="merge">
+		<selectKey keyProperty="codeSeq" resultType="int" order="BEFORE" statementType="PREPARED">
+			<if test="codeSeq == null or codeSeq == 0">
+				select code_seq.nextval from dual
+			</if>
+			<if test="codeSeq > 0">
+				select #{codeSeq} from dual
+			</if>
+		</selectKey>
+		merge into master_code a
+		using dual
+            on (code_seq = #{codeSeq})
+            when matched then
+            	update
+           		<set>
+					<if test="codeGroup != null">
+						code_group = #{codeGroup,jdbcType=VARCHAR},
+					</if>
+					<if test="codeNumber != null">
+						code_number = #{codeNumber,jdbcType=VARCHAR},
+					</if>
+					<if test="codeName != null">
+						code_name = #{codeName,jdbcType=VARCHAR},
+					</if>
+					<if test="codeDetail != null">
+						code_detail = #{codeDetail,jdbcType=VARCHAR},
+					</if>
+				</set>
+            when not matched then
+            	insert (
+					code_group, code_number,
+					code_name, code_detail, code_seq
+				)
+				values (
+					#{codeGroup,jdbcType=VARCHAR}, #{codeNumber,jdbcType=VARCHAR}, 
+					#{codeName,jdbcType=VARCHAR}, #{codeDetail,jdbcType=VARCHAR}, #{codeSeq,jdbcType=NUMERIC} 
+				)
+	</insert>
+	
+	<insert id="categoryCountInsert">
+		insert into category_count
+		(code_number)
+		values
+		(#{codeNumber})
+	</insert>
+	<delete id="categoryCountDelete">
+		delete from category_count
+		where code_number = #{codeNumber}
+	</delete>
+	
+</mapper>

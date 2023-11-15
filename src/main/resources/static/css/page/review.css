@@ -1,0 +1,537 @@
+@charset "UTF-8";
+
+/*#####################여기부터 새로 추가한 부분######################*/
+#slideShow {
+	clear: both;
+	/* 플로팅 해제 */
+	width: 100%;
+	/* 너비 */
+	height: 300px;
+	/* 높이 */
+	overflow: hidden;
+	/* 영역 넘치면 감춤 */
+	position: relative;
+	padding: 25px;
+}
+
+/* #slides {
+          position: absolute;
+        } */
+
+#slides>img {
+	width: 100%;
+	/* 너비 */
+	float: left;
+	/* 가로로 배치 */
+}
+
+#prev {
+	left: 0;
+	/* 왼쪽으로 붙여서 */
+}
+
+#next {
+	right: 0;
+	/* 오른쪽으로 붙여서 */
+}
+
+/*메인 ul*/
+.main-ul {
+	margin-top: 10px;
+	padding: 0;
+
+}
+
+.main-ul>li {
+	padding: 0px 0px 15px;
+	font-size: 15px;
+	list-style-type: circle;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	text-wrap: nowrap;
+
+}
+
+.main-bd {
+	border-top: 2px solid;
+}
+
+/*메인 리스트 3개*/
+.notice-a {
+	font-size: 35px;
+	font-weight: bold;
+	float: right;
+	color: #9f9e9ebd;
+}
+
+.notice-h2 {
+	display: inline-block;
+	margin-top: 10px;
+
+}
+
+/*텍스트 영역*/
+.text-area {
+	height: 142px;
+	overflow: hidden;
+	margin-bottom: 5px;
+}
+
+.review-text-area {
+	width: 600px;
+	overflow: hidden;
+	position: relative;
+	line-height: 1.2em;
+	/* 한 줄의 높이 설정 */
+	max-height: 3.7em;
+	/* 4줄에 해당하는 높이 설정 (4 * 1.2em) */
+}
+
+.c-more {
+	position: absolute;
+	bottom: 0;
+
+}
+
+.view-count {
+	float: right;
+}
+
+/*후기 상세보기 테이블*/
+.table-review {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.table-review th,
+td {
+	border: 1px solid black;
+	padding: 8px;
+	text-align: left;
+}
+
+.table-review td {
+	width: 35%;
+	color: #070606;
+	font-size: 15px;
+}
+
+.table-review th {
+	background-color: #f2f2f2;
+	/* 회색 배경색 */
+	width: 15%;
+	color: #070606;
+
+}
+
+/*후기 상세보기*/
+.review-list {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	margin-bottom: 10px;
+	background-color: #f2f2f2;
+	padding: 15px;
+	color: #070606;
+	font-weight: bold;
+}
+
+.review-ul {
+	padding: 0;
+}
+
+.review-ul li {
+	font-size: 15px;
+	float: left;
+	list-style: none;
+	color: #070606;
+	margin-right: 20px;
+	margin-bottom: 10px;
+}
+
+/*######아이콘#######*/
+.icon-container {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 30px;
+	color: white;
+}
+
+.icon-love {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 30px;
+
+}
+
+.love-list {
+
+	float: right;
+	margin-top: 15px;
+}
+
+#recommend {
+	font-size: 30px;
+	color: #3ab41cb5;
+}
+
+.recommend-list {
+	font-size: 30px;
+	color: #5b975b;
+}
+
+.notification-badge {
+	position: absolute;
+	top: -7px;
+	right: -7px;
+	background-color: red;
+	color: white;
+	border-radius: 50%;
+	padding: 4px 8px;
+	font-size: 12px;
+	font-weight: bold;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+
+}
+
+.icon-love:hover {
+	color: black;
+}
+
+.icon-love:hover .recommend {
+	color: #5b975b;
+}
+
+.icon-container:hover .icon-message {
+	color: black;
+}
+
+.icon-container:hover .mypage {
+	color: black;
+}
+.icon-container:hover .login-icon {
+	color: black;
+}
+
+
+#review-root {
+  width: 30%;
+  margin: 0 auto;
+  max-width: 800px;
+  margin-top: 10px;
+}
+
+.review-title {
+  text-align: center;
+}
+
+.review-contents {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+.review-contents .review-upload-box {
+  width: 100%;
+  margin-right: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.review-contents .review-upload-box .review-drag-file {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 3px dashed #dbdbdb;
+}
+.review-contents .review-upload-box .review-drag-file .review-highlight {
+  border: 3px dashed red;
+}
+.review-contents .review-upload-box .review-drag-file .review-image {
+  width: 40px;
+}
+.review-contents .review-upload-box .review-drag-file .review-message {
+  margin-bottom: 0;
+}
+.review-contents .review-upload-box .review-drag-file .review-preview {
+  display: none;
+  position: absolute;
+  left: 0;
+  height: 0;
+  width: 100%;
+  height: 100%;
+}
+.review-contents .review-upload-box .review-file-label {
+  margin-top: 30px;
+  background-color: #5b975b;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  width: 65%;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.review-contents .review-upload-box .review-file {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .review-contents {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+  }
+  .review-contents .review-upload-box {
+    width: 100%;
+    box-sizing: border-box;
+    margin-right: 0;
+  }
+  .review-contents .review-upload-box .review-drag-file {
+    height: 150px;
+  }
+  .review-contents .review-files {
+    width: 100%;
+    box-sizing: border-box;
+    margin-right: 0;
+    overflow: initial;
+  }
+}
+
+.ck-form-review{
+	margin-top: 20px;
+}
+
+.ck-editor__editable {
+	height: 50vh;
+}
+
+.ck-form-review {
+	width:68%;
+}
+
+/*################################################################################################################################
+################################################################################################################################
+################################################################로그인화면#########################################################
+################################################################################################################################
+################################################################################################################################
+*/
+.login-form {
+box-sizing: border-box;
+   background: #f6f5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  height: 100vh;
+  margin: -20px 0 50px; 
+}
+
+.container-login h1 {
+  font-weight: bold;
+}
+
+.container-login h2 {
+  text-align: center;
+}
+
+/* .container-login p {
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin: 20px 0 30px;
+} */
+
+.container-login span {
+  font-size: 12px;
+}
+
+.container-login a {
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 15px 0;
+}
+
+.container-login button {
+  display: block;
+  border-radius: 20px;
+  border: 1px solid #2c901c;
+  background-color: #2c901c;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  margin-top: 25px;
+}
+
+.container-login button:active {
+  transform: scale(0.95);
+}
+
+.container-login button:focus {
+  outline: none;
+}
+
+.container-login button.ghost {
+  background-color: transparent;
+  border-color: #FFFFFF;
+}
+
+.container-login form {
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+.form-container-login input {
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+}
+
+.container-login {
+  background-color: #fff;
+  border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+      0 10px 10px rgba(0,0,0,0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
+  
+}
+
+.form-container-login {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+
+.sign-in-container-login {
+  padding: 20px;
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+
+.container-login.right-panel-active .sign-in-container-login {
+  transform: translateX(100%);
+}
+
+.sign-up-container-login {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+.container-login.right-panel-active .sign-up-container-login {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: show 0.6s;
+  padding: 20px;
+}
+
+@keyframes show {
+  0%, 49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+  
+  50%, 100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+.overlay-container-login {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.container-login.right-panel-active .overlay-container-login{
+  transform: translateX(-100%);
+}
+
+.overlay {
+  background: linear-gradient(to right, #2c901c, #9fd175);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #FFFFFF;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+    transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.container-login.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+  transform: translateX(-20%);
+}
+
+.container-login.right-panel-active .overlay-left {
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.container-login.right-panel-active .overlay-right {
+  transform: translateX(20%);
+}
+
+.social-container-login {
+  color:red;
+  padding: 20px;
+}
+

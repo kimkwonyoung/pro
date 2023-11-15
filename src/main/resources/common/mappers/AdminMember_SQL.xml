@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="adminmember">
+
+<!-- GradeVO 객체를 위한 resultMap -->
+  <resultMap id="GradeResultMap" type="GradeVO">
+    <id property="gradeSeq" column="grade_seq" />
+    <result property="groupMemSeq" column="group_mem_seq" />
+    <result property="gradeCount" column="grade_count" />
+    <result property="gradeAdd" column="grade_add" />
+    <result property="grade" column="grade" />
+  </resultMap>
+
+  <!-- GroupMemberVO 객체와 GradeVO 객체를 매핑하기 위한 resultMap -->
+  <resultMap id="GroupMemberResultMap" type="GroupMemberVO">
+    <id property="groupMemSeq" column="group_mem_seq" />
+    <result property="groupMemId" column="group_mem_id" />
+    <result property="groupName" column="group_name" />
+    <result property="groupPwd" column="group_pwd" />
+    <result property="groupNumber" column="group_number" />
+    <result property="groupPhone" column="group_phone" />
+    <result property="groupAuth" column="group_auth" />
+    <result property="groupDelYn" column="group_del_yn" />
+    <result property="groupJoinDate" column="group_join_date" />
+    
+    <!-- GradeVO와의 1:1 관계를 위한 association -->
+    <association property="grade" resultMap="GradeResultMap" />
+  </resultMap>
+
+
+
+	<sql id="select">
+		mem_seq, mem_id, name, gender, phone, platform, auth, del_yn, ben_yn, join_date
+		</sql>
+		
+		<sql id="selectVolunteerTime">
+        volun_heat, volun_addtime, volun_noshow
+   		</sql>
+   		
+   		<!-- 단체 회원 속성을 위한 sql 스니펫 -->
+<sql id="selectgroupmember">
+    group_mem_seq,
+    group_mem_id,
+    group_name,
+    group_pwd,
+    group_number,
+    group_phone,
+    group_auth,
+    group_del_yn,
+    group_join_date
+</sql>
+
+<!-- 평점 속성을 위한 sql 스니펫 -->
+<sql id="selectgrade">
+    grade_seq,
+    group_mem_seq
+    grade_count,
+    grade_add,
+    grade
+</sql>
+   		
+<!--    		개인회원검색조건 -->
+			<sql id="whereClause">
+		<trim prefix="where" prefixOverrides="and">
+			<if test="searchWord != null and searchWord != ''">
+				<choose>
+					<when test="type1 == 'TopField'">
+						and mem_seq like concat(concat('%', #{searchWord}), '%')
+					</when>
+					<when test="type1 == 'mem_id'">
+						and name like concat(concat('%', #{searchWord}), '%')
+					</when>
+					<when test="type1 == 'group_id'">
+						and group_id like concat(concat('%', #{searchWord}), '%')
+					</when>
+<!-- 					<otherwise> -->
+<!-- 						and (title like concat(concat('%', #{searchWord}), '%') or mem_id like concat(concat('%', #{searchWord}), '%')) -->
+<!-- 					</otherwise> -->
+				</choose>
+			</if>
+		</trim>
+	</sql>
+	
+	<!-- 단체 회원 검색 조건 -->
+<sql id="whereClause2">
+    <trim prefix="where" prefixOverrides="and">
+        <if test="searchWord != null and searchWord != ''">
+            <choose>
+                <when test="type1 == 'group_mem_seq'">
+                    and group_mem_seq like concat(concat('%', #{searchWord}), '%')
+                </when>
+                <when test="type1 == 'group_mem_id'">
+                    and group_mem_id like concat(concat('%', #{searchWord}), '%')
+                </when>
+                <when test="type1 == 'group_name'">
+                    and group_name like concat(concat('%', #{searchWord}), '%')
+                </when>
+                <!-- 다른 검색 조건에 따른 필드 추가 가능 -->
+            </choose>
+        </if>
+    </trim>
+</sql>
+	
+<!--  개인 카운트 -->
+	<select id="totalCount" parameterType="MemberVO" resultType="int">
+		select count(*)
+		from member
+		<include refid="whereClause" />
+	</select>
+
+	
+<!-- 개인회원과 봉사시간 정보 리스트 -->
+<select id="selectMemberWithVolunteerTimeList" parameterType="MemberSearchVO" resultType="MemberVO">
+    <include refid="paging.top" />
+    select 
+        M.*,
+        V.VOLUN_ADDTIME as "volunteerTime.volunAddtime",
+        V.VOLUN_HEAT as "volunteerTime.volunHeat",
+        V.VOLUN_NOSHOW as "volunteerTime.volunNoshow"
+    from member M
+    inner join VOLUNTEER_TIME V on M.mem_seq = V.MEM_SEQ
+    <include refid="whereClause" />
+    <choose>
+        <when test="sort != null and sort != ''">
+            order by ${sort}
+        </when>
+        <otherwise>
+            order by M.mem_seq desc
+        </otherwise>
+    </choose>
+    <include refid="paging.bottom" />
+</select>
+
+
+<!-- 단체 회원과 그들의 평점을 조인하는 전체 select 문 -->
+<select id="selectgroupmemberwithgradelist" parameterType="GroupMemberSearchVO" resultMap="GroupMemberResultMap">
+    <include refid="paging.top" />
+        SELECT
+        GM.group_mem_seq,
+        GM.group_mem_id,
+        GM.group_name,
+        GM.group_pwd,
+        GM.group_number,
+        GM.group_phone,
+        GM.group_auth,
+        GM.group_del_yn,
+        GM.group_join_date,
+        G.grade_seq,
+        GM.group_mem_seq AS grade_group_mem_seq,
+        G.grade_count,
+        G.grade_add,
+        G.grade
+    FROM group_member GM
+    LEFT JOIN grade G ON GM.group_mem_seq = G.group_mem_seq
+    <include refid="whereClause2" />
+    <choose>
+        <when test="sort != null and sort != ''">
+            ORDER BY ${sort}
+        </when>
+        <otherwise>
+            ORDER BY GM.group_mem_seq DESC
+        </otherwise>
+    </choose>
+    <include refid="paging.bottom" />
+</select>
+	
+<!-- 	회원 제제 버튼  -->
+	<update id="AdminBlockMember" parameterType="int">
+    UPDATE member
+    SET ben_yn = 'Y'
+    WHERE mem_seq = #{memSeq}
+	</update>	
+
+
+</mapper>
+
