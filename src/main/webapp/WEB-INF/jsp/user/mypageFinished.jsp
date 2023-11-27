@@ -10,12 +10,6 @@
 
             <!-- Page content-->
             <div class="container-fluid">
-               <div class="row" style="width: 1100px;">
-               </div>
-
-
-
-
 
                 <div class="row posts-entry" style="margin-bottom: 2rem;">
                 
@@ -45,7 +39,7 @@
 							</div>
 						</div>
 					</c:forEach>
-					
+
 					<%@ include file="/WEB-INF/jsp/common/inc-paging.jsp"%>
                     </div>
 			</div>

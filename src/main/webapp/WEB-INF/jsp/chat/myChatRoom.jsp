@@ -35,8 +35,8 @@
     
     //MQTT 수신 받을 상태로 초기화를 한다
     //MQTT client
-    const roomId = localStorage.getItem('adminchat.roomId');
-    const sender = localStorage.getItem('adminchat.sender');
+    const roomId = localStorage.getItem('chat.recruitSeq');
+    const sender = localStorage.getItem('chat.sender');
 
     //MQTT info host, port, topic 을 설정.
     //const mqtt_host = "www.masugil.shop";

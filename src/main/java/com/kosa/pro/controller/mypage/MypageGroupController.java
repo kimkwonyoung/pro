@@ -123,9 +123,16 @@ public class MypageGroupController extends PrtController {
 		int status = _mypageGroupService.updateApprove(vpvo);
 		
     	if(status > 0) {
-    		result.put("status", true);
-    		result.put("message", "봉사신청 '승인' 처리 되었습니다.");
-    		result.put("approve", _mypageGroupService.approve(vpvo));
+    		
+    		if(vpvo.getMemCount() > vpvo.getCount()) {
+	    		result.put("status", true);
+	    		result.put("message", "봉사신청 '승인' 처리 되었습니다.");
+	    		result.put("approve", _mypageGroupService.approve(vpvo));
+    		} else {
+    			result.put("status", false);
+        		result.put("message", "인원이 초과되었습니다.");
+    		}
+    		
     	} else {
     		result.put("status", false);
     		result.put("message", "오류가 발생했습니다. 다시 시도해주세요.");

@@ -97,8 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         
     }
 	
-	public static void main(String [] args) {
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		System.out.println("user1@aaa.com->[" + encoder.encode("123"));
-	}
+//	public static void main(String [] args) {
+//		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//		System.out.println("user1@aaa.com->[" + encoder.encode("123"));
+//	}
 }

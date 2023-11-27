@@ -192,7 +192,7 @@
 	    }
 	  }
 
-	  var targetDate = new Date("${recruit.recruitStartDate}");
+	  var targetDate = new Date("${recruit.recruitEndDate}");
 	  var dday = calculateDday(targetDate);
 
 	  document.getElementById("ddayElement").innerHTML = dday;

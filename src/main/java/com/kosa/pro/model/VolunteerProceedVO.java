@@ -27,7 +27,8 @@ public class VolunteerProceedVO implements GeneralModel {
 	// [별이] 11/13 - 봉사활동 신청내역 승인/거절 페이지에서 필요해서 멤버테이블에서 조인한 필드들임
 	private String name;			//	(멤버)이름
     private String gender;			//	(멤버)성별
-	private int count;				//	승인된사람 카운트
+    private int memCount;			//  모집인원
+	private int count;				//	승인된 인원
 	private String recruitTitle;	//  신청내역에서 번호대신 제목으로 바꿔달라는 요청때문에 추가
     // [user] 마이페이지 메인 조인 용도 필드
 	private String latitude;     	// 위도

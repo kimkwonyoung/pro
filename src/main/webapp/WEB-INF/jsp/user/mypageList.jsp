@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="col-lg-10">
-                    
+<!--                     
 			             <div class="blog-entry d-flex blog-entry-search-item" style="display: flex; align-items: center;">
 			               <div style="flex-grow: 1; margin-left: 1rem;">
 			               	   <span><button type="button" class="btn btn-primary">신청 중</button></span>
@@ -39,24 +39,14 @@
 			                   </div>
 			               </div>
 			             </div>
-
-			             <div class="blog-entry d-flex blog-entry-search-item" style="display: flex; align-items: center;">
-			               <div style="flex-grow: 1; margin-left: 1rem;">
-			               	   <span><button type="button" class="btn btn-primary">recruit_board, volunteer_proceed 조인{recruit.state}</button></span>
-			               	   <span><button type="button" class="btn btn-warning">{recruit.recruitEndDate}-sysdate에서 연월일 뺀 숫자 출력하기</button></span>
-			                   <h2><a href="single.html">{recruit.recruitTitle}</a></h2>
-			                   <span class="me-2">신청 인원 : {}/{recruit.mem_count}</span><span class="date me-2">봉사 기간 : {recruit.volunStartDate}~{recruit.volunEndDate}</span><span class="me-2">모집 기관 : {recruit.groupName}</span>
-			               </div>
-			             </div>
-
+ -->
 						<c:forEach var="recruit" items="${list}">
 			             <div class="blog-entry d-flex blog-entry-search-item" style="display: flex; align-items: center;">
 			               <div style="flex-grow: 1; margin-left: 1rem;">
-			               	   <span><button type="button" class="btn btn-primary">recruit_board, volunteer_proceed 조인 : ${recruit.state}</button></span>
-			               	   <span><button type="button" class="btn btn-warning">${recruit.recruitEndDate}-sysdate에서 연월일 뺀 숫자 출력하기</button></span>
+			               	   <span><button type="button" class="btn btn-primary">${recruit.state}</button></span>
+			               	   <span><button type="button" class="btn btn-warning">${recruit.recruitEndDate}</button></span>
 			                   <h2><a href="single.html">${recruit.recruitTitle}</a></h2>
-			                   <span class="me-2">신청 인원 : {}/${recruit.memCount}</span>
-			                   <span class="date me-2">봉사 기간 : ${recruit.volunStartDate}~${recruit.volunEndDate}</span>
+			                   <span class="date me-2">봉사 기간 : ${recruit.volunStartDate} ~ ${recruit.volunEndDate}</span>
 			                   <span class="me-2">모집 기관 : ${recruit.groupName}</span>
 			               </div>
 			             </div>
@@ -94,4 +84,46 @@
 <%@ include file="/WEB-INF/jsp/include/bottom.jsp"%>   
 
   </body>
+  <script>
+  var recruitState${status.index} = "${recruit.recruitState}";
+
+  var recruitLink${status.index} = document.getElementById("recruitLink${status.index}");
+
+  if (recruitState${status.index} === '모집완료') {
+    recruitLink${status.index}.style.backgroundColor = 'red';
+  }
+
+  
+	// calculateDday 함수 정의
+	function calculateDday(targetDate) {
+	    var target = new Date(targetDate);
+	    var today = new Date();
+	    var timeDiff = target - today;
+	    var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+	    if (daysDiff === 0) {
+	        return "금일마감";
+	    } else if (daysDiff > 0) {
+	        return "D-" + daysDiff;
+	    } else {
+	        return "D+" + Math.abs(daysDiff);
+	    }
+	}
+
+	// DOMContentLoaded 이벤트 리스너
+	document.addEventListener("DOMContentLoaded", function() {
+	    // 각 recruit-start-date 클래스에 대해 D-Day 계산 및 할당
+	    var dateElements = document.getElementsByClassName("recruit-start-date");
+
+	    for (var i = 0; i < dateElements.length; i++) {
+	        var targetDateString = dateElements[i].value;
+	        var targetDate = new Date(targetDateString.replace(/-/g, "/"));
+	        var dday = calculateDday(targetDate);
+
+	        // 해당하는 D-Day 값을 클래스가 dday-element인 요소에 할당
+	        document.getElementsByClassName("dday-element")[i].innerHTML = dday;
+	    }
+	});
+
+  </script>
 </html>

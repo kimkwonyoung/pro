@@ -210,8 +210,8 @@
     if (recruitState${status.index} === '모집완료') {
       recruitLink${status.index}.style.backgroundColor = 'red';
     }
-  	</script>
-	<script>
+
+    
 	// calculateDday 함수 정의
 	function calculateDday(targetDate) {
 	    var target = new Date(targetDate);
@@ -231,7 +231,7 @@
 	// DOMContentLoaded 이벤트 리스너
 	document.addEventListener("DOMContentLoaded", function() {
 	    // 각 recruit-start-date 클래스에 대해 D-Day 계산 및 할당
-	    var dateElements = document.getElementsByClassName("recruit-start-date");
+	    var dateElements = document.getElementsByClassName("recruit-end-date");
 
 	    for (var i = 0; i < dateElements.length; i++) {
 	        var targetDateString = dateElements[i].value;

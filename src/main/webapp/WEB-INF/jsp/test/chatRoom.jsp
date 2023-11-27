@@ -42,7 +42,7 @@
     //const mqtt_host = "www.masugil.shop";
     //const mqtt_port = 9090; //websocket port : mosquitt.conf 파일에 설정됨 :   
     //const mqtt_topic = "/team1/sub/" + roomId;
-    const mqtt_host = "www.amond.site";
+    const mqtt_host = "www.amond.store";
     const mqtt_port = 8883; //websocket ssl port : mosquitt.conf 파일에 설정됨  
     const mqtt_topic = "/test/sub/" + roomId;
     //*websocket에 ssl 적용시

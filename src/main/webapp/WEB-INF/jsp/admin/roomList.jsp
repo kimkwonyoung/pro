@@ -109,6 +109,7 @@
         	alert("대화명은 필수 입력입니다");
         	return false;
         }
+        
         //입장하는 사람의 이름과 채팅방이름을 지역저장소에 저장한다
         //이렇게 저장하면 다른 페이지에서 해당 키를 이용하여 값을 읽을 수 있다
         localStorage.setItem('adminchat.sender', sender);

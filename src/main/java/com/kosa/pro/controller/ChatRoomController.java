@@ -1,34 +1,35 @@
-//package com.kosa.pro.controller;
-//
-//import java.util.List;
-//
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.ResponseBody;
-//
-//import com.kosa.pro.model.ChatRoomVO;
-//import com.kosa.pro.service.admin.ChatRoomService;
-//
-//import lombok.RequiredArgsConstructor;
-//
-//@RequiredArgsConstructor
-//@Controller
-//@RequestMapping("/admin")
-//public class ChatRoomController {
-//
-//	private final ChatRoomService chatRoomService;
-//	
-//	// "채팅jsp" 뷰 페이지를 반환하는 핸들러
-//		@GetMapping("/adminchat")
-//		public String adminChat(Model model) {
-//			return "admin/adminchat";
-//		}
-//
+package com.kosa.pro.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.kosa.pro.model.ChatRoomVO;
+import com.kosa.pro.service.test.ChatRoomService;
+
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+@Controller
+@RequestMapping("/support")
+public class ChatRoomController {
+
+	@Autowired
+	ChatRoomService chatRoomService;
+	
+	@GetMapping("/chat")
+	public String supportChat(Model model) {
+		return "test/testchat";
+	}
+
 //	// "roomList" 뷰 페이지를 반환하는 핸들러
 //	@GetMapping("/roomList")
 //	public String roomList(Model model) {
@@ -63,4 +64,4 @@
 //	public ChatRoomVO roomInfo(@PathVariable String roomId) {
 //		return chatRoomService.findRoomById(roomId);
 //	}
-//}
+}

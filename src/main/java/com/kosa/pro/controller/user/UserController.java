@@ -128,6 +128,16 @@ public class UserController extends PrtController {
 
 	
 	
+	// 공용 템플릿 샘플
+	@RequestMapping("/msg")
+	public String myPageTemplate(UserSearchVO search, Model model) throws Exception {
+		super.setPageSubTitle("봉사커뮤니티 마이페이지 리스트 템플릿", model);
+		log.info(">>>>>>>>>>>>>>개인 템플릿 샘플");
+//		model.addAttribute("test", getConfig().getAdminName());
+		return "msg";
+	}
+	
+	
 //	// 공용 템플릿 샘플
 //	@RequestMapping("/template")
 //	public String myPageTemplate(UserSearchVO search, Model model) throws Exception {
@@ -136,4 +146,5 @@ public class UserController extends PrtController {
 ////		model.addAttribute("test", getConfig().getAdminName());
 //		return "user/myPageTemplate";
 //	}
+	
 }

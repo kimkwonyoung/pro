@@ -56,11 +56,10 @@
     	<include refid="paging.top" /> 
 		select
 		    vp.state,
-		    r.volun_start_date,
-		    r.volun_end_date,
 		    r.recruit_end_date,
 		    r.recruit_title,
-		    r.mem_count,
+		    r.volun_start_date,
+		    r.volun_end_date,
 		    r.group_name
 		from 
 		    recruit_board r 
@@ -104,7 +103,10 @@
  	<!-- 봉사 온도 끝 -->
 
 
+	<!--  -->
 
+	<!--  -->
+	
 
 	<!-- 메인 화면 출력용 진행 중 봉사 -->
 	<!-- selectPersonal, selectVolunteerProceedList, timeRecord -->

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="AdminIndex">
+
+	<!-- MasterCodeVO 객체를 위한 resultMap -->
+	<resultMap type="MasterCodeVO" id="MasterCodeResultMap">
+		<result property="codeGroup" column="CODE_GROUP" />
+		<result property="codeNumber" column="CODE_NUMBER" />
+		<result property="codeName" column="CODE_NAME" />
+		<result property="codeDetail" column="CODE_DETAIL" />
+		<result property="codeYn" column="CODE_YN" />
+		<result property="categoryCount" column="CATEGORY_COUNT" />
+	</resultMap>
+
+	<!-- RecruitBoardVO 객체를 위한 resultMap -->
+	<resultMap type="RecruitBoardVO" id="RecruitBoardResultMap">
+    <result property="regDate" column="REG_DATE" />
+	</resultMap>
+
+	  <!-- 차트에 가져올 월별 주최된 봉사 수 -->
+    	 <select id="selectMonthRecruitCount" resultType="RecruitMonthCountVO">
+			SELECT 
+		    TO_CHAR(REG_DATE, 'YYYY-MM') AS month,
+		    COUNT(*) AS total_recruits
+		FROM 
+		    ADMIN.RECRUIT_BOARD
+		WHERE
+		    REG_DATE IS NOT NULL
+		GROUP BY 
+		    TO_CHAR(REG_DATE, 'YYYY-MM')
+		ORDER BY 
+		    month    
+    </select>
+
+	<!-- 차트에 가져올 개별 카테고리 집계 -->
+	<select id="selectCategoryCount" resultMap="MasterCodeResultMap">
+		SELECT
+		mc.CODE_GROUP,
+		mc.CODE_NUMBER,
+		mc.CODE_NAME,
+		mc.CODE_DETAIL,
+		mc.CODE_YN,
+		cc.CATEGORY_COUNT
+		FROM
+		ADMIN.MASTER_CODE mc
+		LEFT JOIN
+		ADMIN.CATEGORY_COUNT cc ON mc.CODE_NUMBER = cc.CODE_NUMBER
+	</select>
+
+		<!--   	후기 게시판 TOP 5 -->
+    <select id="selectTop5Reviews" resultType="ReviewBoardVO">
+        SELECT
+            REVIEW_SEQ AS "reviewSeq",
+		    REVIEW_TITLE AS "reviewTitle",
+		    WRITE_ID AS "writeId",
+		    TO_CHAR(REG_DATE, 'YYYY-MM-DD') AS "regDate",
+		    RECOM_COUNT AS "recomCount",
+		    VIEW_COUNT AS "viewCount"
+        FROM
+            ADMIN.REVIEW_BOARD
+        WHERE
+            DEL_YN = 'N'
+        ORDER BY
+            RECOM_COUNT DESC,
+            REG_DATE DESC
+        FETCH FIRST 5 ROWS ONLY
+    </select>
+
+
+
+
+
+</mapper>

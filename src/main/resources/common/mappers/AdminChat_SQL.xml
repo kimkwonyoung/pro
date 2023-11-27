@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="adminchat">
 
-		<!-- 봉사 이력 관리 테이블 resultMap -->
+	<!-- 봉사 이력 관리 테이블 resultMap -->
 	<resultMap id="VolunteerProceedResultMap"
 		type="VolunteerProceedVO">
 		<id column="VOLUN_PROCEED_SEQ" property="volunProceedSeq" />
@@ -14,18 +14,19 @@
 		<result column="ATTENDANCE" property="attendance" />
 	</resultMap>
 
-		<!-- 채팅방 테이블 resultMap -->
+	<!-- 채팅방 테이블 resultMap -->
 	<resultMap id="ChatRoomResultMap" type="ChatRoomVO">
-	<id column="CHAT_ROOM_ID" property="chatRoomId"/>
-    <result column="ROOM_NAME" property="roomName"/>
-    <result column="CREATED_AT" property="createdRoomTime"/>
-    <result column="CLOSED" property="closed"/>
-    <result column="RECRUIT_SEQ" property="recruitSeq"/>
-    	<!-- title을 RECRUIT_BOARD 테이블의 title 열과 매핑 -->
-    <result column="recruit_title" property="recruitTitle"/>
-    
-    <!-- VolunteerProceedVO와의 관계를 위한 association -->
-    <association property="volunteerProceedVO" resultMap="VolunteerProceedResultMap" />
+		<id column="CHAT_ROOM_ID" property="chatRoomId" />
+		<result column="ROOM_NAME" property="roomName" />
+		<result column="CREATED_AT" property="createdRoomTime" />
+		<result column="CLOSED" property="closed" />
+		<result column="RECRUIT_SEQ" property="recruitSeq" />
+		<!-- title을 RECRUIT_BOARD 테이블의 title 열과 매핑 -->
+		<result column="recruit_title" property="recruitTitle" />
+
+		<!-- VolunteerProceedVO와의 관계를 위한 association -->
+		<association property="volunteerProceedVO"
+			resultMap="VolunteerProceedResultMap" />
 
 	</resultMap>
 
@@ -37,44 +38,52 @@
 	</select>
 
 	<!-- 채팅방 정보와 관련된 봉사 신청 정보를 가져오는 쿼리 -->
-	<select id="findAllRecruitChatRoom" resultMap="ChatRoomResultMap">
-    SELECT
-        cr.chat_room_id,
-        cr.room_name,
-        cr.created_at,
-        cr.closed,
-        vp.mem_seq,
-        vp.group_mem_seq,
-        vp.state,
-        rb.recruit_seq,
-        rb.recruit_title
-    FROM
-        CHAT_ROOM cr
-    JOIN
-        VOLUNTEER_PROCEED vp ON cr.recruit_seq = vp.recruit_seq
-    JOIN
-        RECRUIT_BOARD rb ON vp.recruit_seq = rb.recruit_seq
-    WHERE
-        vp.state = '승인'
+	<select id="findAllRecruitChatRoom"
+		resultMap="ChatRoomResultMap">
+		SELECT
+		cr.chat_room_id,
+		cr.room_name,
+		cr.created_at,
+		cr.closed,
+		vp.mem_seq,
+		vp.group_mem_seq,
+		vp.state,
+		rb.recruit_seq,
+		rb.recruit_title
+		FROM
+		CHAT_ROOM cr
+		JOIN
+		VOLUNTEER_PROCEED vp ON cr.recruit_seq = vp.recruit_seq
+		JOIN
+		RECRUIT_BOARD rb ON vp.recruit_seq = rb.recruit_seq
+		WHERE
+		vp.state = '승인'
 
 	</select>
-	
+
 	<!-- 특정 채팅방 정보와 메시지 가져오는 테이블 쿼리 -->
 	<select id="findMessagesByChatRoomId" resultType="ChatMessageVO">
-        SELECT
-            MESSAGE_ID,
-            CHAT_ROOM_ID,
-            SENDER_ID,
-            MESSAGE_TEXT,
-            SENT_AT
-        FROM
-            CHAT_MESSAGE
-        WHERE
-            CHAT_ROOM_ID = #{chatRoomId}
-        ORDER BY
-            SENT_AT ASC
-    </select>
+		SELECT
+		MESSAGE_ID,
+		CHAT_ROOM_ID,
+		SENDER_ID,
+		MESSAGE_TEXT,
+		SENT_AT
+		FROM
+		CHAT_MESSAGE
+		WHERE
+		CHAT_ROOM_ID = #{chatRoomId}
+		ORDER BY
+		SENT_AT ASC
+	</select>
 
+	<!-- 회원 채팅방 정보 가져오기 -->
+	<select id="findMyChatRoom" parameterType="String" resultType="VolunteerProceedVO">
+		SELECT RECRUIT_SEQ
+		FROM VOLUNTEER_PROCEED
+		WHERE MEM_SEQ = ${memSeq}
+		AND STATE = '승인'
+	</select>
 
 
 </mapper>

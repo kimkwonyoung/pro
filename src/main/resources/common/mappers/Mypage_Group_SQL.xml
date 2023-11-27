@@ -50,6 +50,8 @@
 		    vp.volun_proceed_seq,
 		    vp.recruit_seq,
 		    rb.recruit_title,
+		    rb.count,
+		    rb.mem_count,
 		    vp.mem_seq,
 		    m.name,
 		    vp.state,

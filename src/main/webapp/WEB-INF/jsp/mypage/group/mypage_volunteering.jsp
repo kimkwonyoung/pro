@@ -53,6 +53,7 @@
 					        <th>이름</th>
 					        <th>승인여부</th>
 					        <th>출석여부</th>
+					        <th>mqtt테스트</th>
 					    </tr>
 					
 					    <c:forEach items="${volunteer}" var="volunteer">
@@ -61,6 +62,7 @@
 					            <td>${volunteer.name}</td>
 					            <td>${volunteer.state}</td>
 					            <td>${volunteer.attendance}</td>
+					            <td class="attendanceCk" id="attendanceCkId"></td>
 					        </tr>
  					    </c:forEach>
 					</table>
@@ -100,4 +102,3 @@
 		// marker.setMap(null);    
     </script>
 
-    <scrpit></scrpit>
