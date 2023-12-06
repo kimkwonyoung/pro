@@ -156,4 +156,14 @@ public class GeneralDAOImpl implements GeneralDAO {
 	public int update(String sqlMapID, List<Long> memSeqArray) {
 		return sqlSession.update(sqlMapID, memSeqArray);
 	}
+	
+	/**
+	 * 
+	 * @param 스프링 스케줄러 온도 업데이트용
+	 * @param 김민기가 잠깐 씀; ㅈㅅㅈㅅ
+	 * @return
+	 */
+	public int update(String sqlMapID, Object key) {
+		return sqlSession.update(sqlMapID, key);
+	}
 }

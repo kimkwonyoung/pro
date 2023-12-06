@@ -21,6 +21,8 @@ public class VolunteerRecordVO implements GeneralModel {
 	private int recruitSeq;
 	private String timein;
 	private String timeout;
+	private String timeinhhmm;  // hh:mm
+	private String timeouthhmm; // hh:mm
 	
 	
 //	[별이] 11/05 추가

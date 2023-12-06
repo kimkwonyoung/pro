@@ -154,35 +154,8 @@
                                        <li><a href="/user/?memSeq=${principal.user.memSeq }">마이페이지</a></li>
                                     </c:otherwise>
                                  </c:choose>
-									<li class="has-children">
-										<div class="icon-container me-4">
-											<a href="" style="color: white;"> <i
-												class="custom-icon fas fa-user mypage"></i>
-											</a>
-										</div>
-										<ul class="dropdown">
-											<c:choose>
-												<c:when test="${principal.user.loginAuth eq 'ADMIN' }">
-												<li><a href="/admin/adminmain">관리자페이지</a></li>
-												</c:when>
-												<c:when test="${principal.user.loginAuth eq 'MANAGER' }">
-													<li><a
-														href="/manager/main?groupSeq=${principal.user.memSeq}">단체마이페이지</a></li>
-												</c:when>
-												<c:otherwise>
-													<li><a href="/user/?memSeq=${principal.user.memSeq }">마이페이지</a></li>
-												</c:otherwise>
-											</c:choose>
-
                                  <li><a href="/logout">로그아웃</a></li>
-                                 <!--                         <li class="has-children"> -->
-                                 <!--                            <a href="#">테스트</a> -->
-                                 <!--                            <ul class="dropdown"> -->
-                                 <!--                               <li><a href="#">Sub Menu One</a></li> -->
-                                 <!--                               <li><a href="#">Sub Menu Two</a></li> -->
-                                 <!--                               <li><a href="#">Sub Menu Three</a></li> -->
-                                 <!--                            </ul> -->
-                                 <!--                         </li> -->
+
                               </ul>
                            </li>
                         </c:if>

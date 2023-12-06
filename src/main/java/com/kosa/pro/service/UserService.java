@@ -34,9 +34,15 @@ public class UserService extends BaseService {
 	    return rowsInserted > 0;
 	}
 	
-	// 봉사활동 종료 시 시간 업데이트 // 봉사활동 종료 시 퇴근 찍으면 timeout 찍히는 용도
+	// 봉사활동 종료 시 시간 업데이트
+	// 봉사활동 종료 시 퇴근 찍으면 timeout 찍히는 용도
+	// volunteer_time 테이블의 volun_addtime 컬럼도 업데이트하는 용도
 	public boolean recordUpdate(UserSearchVO search) {
-		return getDAO().update("user.recordUpdate", search)>0; 
+		boolean success = (getDAO().update("user.recordUpdate", search)>0
+						   &&
+						   getDAO().update("user.updateVolunteerTime", search)>0				
+						  );
+		return success;
 	}
 	
 	// 봉사활동 종료 시 시간 업데이트

@@ -1,5 +1,7 @@
 package com.kosa.pro.controller.user;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -7,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -132,7 +133,8 @@ public class UserController extends PrtController {
 	    // UserSearchVO에 memSeq 셋팅
 	    getMemSeq(search, authentication);
 
-	    boolean success = _userService.recordUpdate(search);
+	    boolean success = _userService.recordUpdate(search) // volunteer_record 테이블의 timeout컬럼 및 volunteer_time 테이블의 addTime컬럼 업데이트 쿼리
+	    																						
 
 	    Map<String, Object> response = new HashMap<>();
 	    if (success) {
@@ -174,15 +176,24 @@ public class UserController extends PrtController {
 	        // 각각의 이벤트마다 새로운 HashMap 생성
 	        HashMap<String, Object> hash = new HashMap<>();
 	        hash.put("title", board.getRecruitTitle());
-	        hash.put("start", board.getVolunStartDate());
-	        hash.put("end", board.getVolunEndDate());
+	        hash.put("start", formatDate(board.getVolunStartDateTime())); // 풀캘린더 DAY까지 제대로 출력하기 위해 한 번 더 처리
+	        hash.put("end", formatDate(board.getVolunEndDateTime())); // 풀캘린더 DAY까지 제대로 출력하기 위해 한 번 더 처리
 
 	        jsonArr.add(hash);
 	    }
-
+	    
+	    System.out.println();
 	    log.info("jsonArrCheck: {}", jsonArr);
 	    return jsonArr;
 	}
+	
+	// 풀캘린더 Day 출력까지 제대로 보여주기 위한 용도 
+	// 시간까지 포함된 문자열로 포맷팅하는 메서드
+	private String formatDate(Timestamp timestamp) {
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    return sdf.format(new Date(timestamp.getTime()));
+	}
+	
 	
 	//로그인 유저 데이터 구성
 	public void getMemSeq(UserSearchVO search, Authentication authentication) {

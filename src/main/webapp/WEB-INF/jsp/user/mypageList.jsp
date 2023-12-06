@@ -25,12 +25,12 @@
 <%-- 						<%@ include file="/WEB-INF/jsp/include/searchformStar.jsp"%>  --%>
                     </div>
 
-                    <div class="col-lg-10">
+                    <div class="col-lg-10" style="min-height:712px">
 
 						<c:forEach var="recruit" items="${list}">
 			             <div class="blog-entry d-flex blog-entry-search-item" style="display: flex; align-items: center;">
 			               <div style="flex-grow: 1; ">
-			               	   <span><button type="button" class="btn btn-primary" style="color: #7f7b7b; font-weight:800; background-color: #f2f2f2; border:transparent;">${recruit.state}</button></span>
+			               	   <span><button type="button" class="btn btn-primary recruitLink" style="color: #7f7b7b; font-weight:800; background-color: #f2f2f2; border:transparent;">${recruit.state}</button></span>
 						            <c:if test="${not empty recruit.rejectMessage}">
 						                <span><button type="button" class="btn btn-primary" style="color: #7f7b7b; font-weight:800; background-color: #f2f2f2 ; border:transparent;">${recruit.rejectMessage}</button></span>
 						            </c:if>
@@ -44,8 +44,7 @@
 
 
 
-					<!-- 권형 페이징 -->                    
- 					<%@ include file="/WEB-INF/jsp/common/inc-paging.jsp"%>
+
 <!-- 
                         <div class="row text-start pt-5 border-top">
                             <div class="col-md-12">
@@ -62,7 +61,10 @@
  -->
                     </div>
 
-
+					<!-- 권형 페이징 -->
+					 <div class="col-lg-10">
+ 						<%@ include file="/WEB-INF/jsp/common/inc-paging.jsp"%>
+ 					</div>
 			</div>
 
 
@@ -117,5 +119,22 @@
 	    }
 	});
 
+	
+    // 문서가 로드된 후 실행되는 함수
+    document.addEventListener("DOMContentLoaded", function() {
+        // 모든 클래스가 "recruitLink"인 요소들을 선택
+        var recruitLinks = document.querySelectorAll('.recruitLink');
+
+        // 각 링크에 대해 반복
+        recruitLinks.forEach(function(link) {
+            // 해당 요소의 텍스트 값이 "모집중"인 경우
+            if (link.innerText.trim() === "승인") {
+                // 링크의 텍스트 색상을 변경하여 흰색으로 설정
+                link.style.color = 'white';
+                // 링크의 배경색을 변경하여 원하는 색상으로 설정
+                link.style.backgroundColor = '#3ab41cb5';
+            }
+        });
+    });
   </script>
 </html>

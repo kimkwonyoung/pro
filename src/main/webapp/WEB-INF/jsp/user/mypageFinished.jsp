@@ -18,7 +18,7 @@
 						<%@ include file="/WEB-INF/jsp/include/searchformfinished.jsp"%> 
                     </div>
 
-                    <div class="col-lg-10">
+                    <div class="col-lg-10" style="height:620px">
 
 					<c:forEach var="finished" items="${list}">
 						<div class="blog-entry d-flex blog-entry-search-item" style="align-items: center !important;">

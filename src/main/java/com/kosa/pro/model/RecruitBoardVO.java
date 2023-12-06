@@ -1,6 +1,7 @@
 package com.kosa.pro.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import com.kosa.pro.model.general.GeneralModel;
 
@@ -47,6 +48,7 @@ public class RecruitBoardVO implements GeneralModel {
 	private String state;			// 조인용 상태(승인/거절)
 	private int count;				// 실제 신청인원
 	private String rejectMessage;	// 거절 메시지
-	
+	private Timestamp volunStartDateTime; // 봉사 시작일과 시간(풀캘린더용)
+	private Timestamp volunEndDateTime;	// 봉사 종료일과 시간(풀캘린더용)
 
 }

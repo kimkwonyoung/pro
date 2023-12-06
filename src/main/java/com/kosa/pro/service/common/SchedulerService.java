@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kosa.pro.model.common.FileAttacheVO;
 import com.kosa.pro.model.common.FileTokenVO;
-import com.kosa.pro.model.common.FileUploadVO;
+import com.kosa.pro.model.search.UserSearchVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -120,4 +120,25 @@ public class SchedulerService extends BaseService {
 		}
 	}
 	
+	
+    @Transactional
+    @Scheduled(fixedDelay = 24 * 60 * 60 * 1000) // 24시간마다 실행 (예: 매일 자정)
+    public void updateVolunteerTimeForAllMembers() {
+        List<Long> allMemberIds = getAllMemberIds(); // 모든 회원의 mem_seq를 가져오는 메소드
+
+        for (Long memberId : allMemberIds) {	// 가져온 모든 회원의 mem_seq를 가지고, 자정에 모든 회원의 봉사온도 update하는 메소드
+        	updateVolunteerHeatForMember();
+        }
+    }
+
+    private void updateVolunteerHeatForMember() {
+        // 해당 회원의 volun_heat 업데이트 쿼리 실행
+    	UserSearchVO search = new UserSearchVO();
+        getDAO().update("user.updateVolunteerHeat", search);
+    }
+
+    private List<Integer> getAllMemberIds() {
+        // 모든 회원의 mem_seq를 조회하는 메소드
+        return (List<Integer>) getDAO().selectList("user.getAllMemberIds", null);
+    }
 }

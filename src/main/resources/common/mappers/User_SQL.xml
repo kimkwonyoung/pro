@@ -124,12 +124,13 @@
           vt.volun_heat,
           vt.volun_heat + rb.volun_time / 2 as tomorrow_heat
       from
-          volunteer_proceed rp
+          volunteer_proceed vp
       join
-          recruit_board rb on rp.recruit_seq = rb.recruit_seq
+          recruit_board rb on vp.recruit_seq = rb.recruit_seq
       join
-          volunteer_time vt on rp.mem_seq = vt.mem_seq
-      where rp.mem_seq= #{memSeq}
+          volunteer_time vt on vp.mem_seq = vt.mem_seq
+      where vp.mem_seq= #{memSeq}
+		   and vp.state = '승인'
            and current_timestamp between rb.volun_start_date and rb.volun_end_date+1
     </select>
     <!-- 봉사 온도 끝 -->
@@ -205,8 +206,10 @@
    <!-- 출퇴근 시간 출력용 -->
    <select id="volunteerRecord" parameterType="UserSearchVO" resultType="volunteerRecordVO">
       select 
-          TO_CHAR(vr.timein, 'HH24:MI') as timein,
-          TO_CHAR(vr.timeout, 'HH24:MI') as timeout
+          vr.timein,
+          vr.timeout,
+          TO_CHAR(vr.timein, 'HH24:MI') as timeinhhmm,
+          TO_CHAR(vr.timeout, 'HH24:MI') as timeouthhmm
       from volunteer_record vr
       join volunteer_proceed vp on vr.recruit_seq = vp.recruit_seq
       join recruit_board rb on vp.recruit_seq = rb.recruit_seq
@@ -229,25 +232,66 @@
               and current_timestamp between rb.volun_start_date and rb.volun_end_date+1
         )
    </update>
-       <!-- 퇴근 시간 업데이트 -->
+   <!-- 퇴근 시간 업데이트 -->
+       
+   	<!-- 퇴근 시 volunteer_time 테이블의 volun_addTime 업데이트 쿼리 -->
+	<update id="updateVolunteerTime" parameterType="UserSearchVO">
+    UPDATE volunteer_time vt
+    SET vt.volun_addtime = vt.volun_addtime + (
+        SELECT SUM(rb.volun_time)
+        FROM volunteer_proceed vp
+        JOIN recruit_board rb ON vp.recruit_seq = rb.recruit_seq
+        WHERE vp.mem_seq = #{memseq}
+            AND vp.state = '승인'
+            AND current_timestamp BETWEEN rb.volun_start_date AND rb.volun_end_date + 1
+            AND vt.mem_seq = vp.mem_seq
+    )
+	</update>
+	<!-- 퇴근 시 volunteer_time 테이블의 volun_addTime 업데이트 쿼리 -->
 
    <!-- 진행 중 봉사 달력 출력용 -->
    <select id="calendarList" parameterType="UserSearchVO" resultType="RecruitBoardVO">   
       select
           rb.recruit_title,
-          rb.volun_start_date,
-          rb.volun_end_date+1 as volun_end_date
+          rb.volun_start_date as volun_start_date_time,
+          rb.volun_end_date as volun_end_date_time
       from 
           recruit_board rb
-         join
+      join
           volunteer_proceed vp on rb.recruit_seq = vp.recruit_seq 
       where 
           vp.state = '승인'
-           and vp.mem_seq = #{memSeq}
+          and vp.mem_seq = #{memSeq}
+      order by
+          rb.volun_start_date desc
 <!-- 
              and vp.mem_seq = 1
             -->
    </select>
    <!-- 진행 중 봉사 달력 출력용 -->
 
+	<!-- volunteer_time 테이블의 volun_addTime 컬럼 업데이트용 -->
+<!-- 	<update id="timeUpdate" parameterType="UserSearchVO" >
+	
+	</update> -->
+	<!-- volunteer_time 테이블의 volun_addTime 컬럼 업데이트용 -->
+	
+	
+
+		
+	<!-- 스프링 스케줄러 이용한 모든 회원 봉사온도 업데이트 쿼리 -->
+	<update id="updateVolunteerHeat" parameterType="int">
+    UPDATE volunteer_time
+    SET volun_heat = 36.5 + volun_addtime/2 - (volun_noshow)*2
+    where mem_seq=${memberId}
+	</update>
+	<!-- 스프링 스케줄러 이용한 모든 회원 봉사온도 업데이트 쿼리 -->
+	
+	<!-- 스프링 스케줄러 처리하기 위해 모든 회원의 mem_seq 획득하는 쿼리 -->
+	<select id="getAllMemberIds" resultType="Long">
+	    SELECT mem_seq
+	    FROM member
+	</select>
+	<!-- 스프링 스케줄러 처리하기 위해 모든 회원의 mem_seq 획득하는 쿼리 -->
+	
 </mapper> 
